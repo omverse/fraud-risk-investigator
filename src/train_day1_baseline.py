@@ -147,21 +147,56 @@ def main():
     print(f"\nPrecision-Recall curve saved to: {pr_curve_path}")
 
     # Save metrics JSON
+    import sys, platform
     metrics = {
-        "dummy_pr_auc": float(dummy_pr),
-        "validation_pr_auc": float(val_pr_auc),
-        "test_pr_auc": float(test_pr_auc),
-        "pr_auc_gap": float(val_pr_auc - test_pr_auc),
-        "test_roc_auc": float(test_roc_auc),
-        "precision_at_0_5": float(prec_05),
-        "recall_at_0_5": float(rec_05),
-        "confusion_matrix_at_0_5": {
-            "TN": int(cm_05[0, 0]),
-            "FP": int(cm_05[0, 1]),
-            "FN": int(cm_05[1, 0]),
-            "TP": int(cm_05[1, 1])
+        "dataset": {
+            "total_rows": int(n),
+            "total_features": int(X.shape[1]),
+            "categorical_features_count": len(cat_cols),
+            "dropped_columns": ["isFraud", "TransactionID", "TransactionDT"]
         },
-        "best_iteration": int(model.best_iteration),
+        "model_config": {
+            "model_name": "XGBClassifier",
+            "random_seed": 42,
+            "parameters": {
+                "n_estimators": 1000,
+                "tree_method": "hist",
+                "enable_categorical": True,
+                "eval_metric": "aucpr",
+                "early_stopping_rounds": 50,
+                "n_jobs": -1,
+                "random_state": 42
+            }
+        },
+        "environment": {
+            "python_version": sys.version.split()[0],
+            "platform": platform.platform(),
+            "libraries": {
+                "xgboost": xgb.__version__,
+                "scikit-learn": "1.9.1",
+                "pandas": pd.__version__,
+                "numpy": np.__version__,
+                "matplotlib": plt.matplotlib.__version__
+            }
+        },
+        "metrics": {
+            "dummy_pr_auc": float(dummy_pr),
+            "validation_pr_auc": float(val_pr_auc),
+            "test_pr_auc": float(test_pr_auc),
+            "validation_test_pr_auc_gap": float(val_pr_auc - test_pr_auc),
+            "test_roc_auc": float(test_roc_auc),
+            "best_iteration": int(model.best_iteration),
+            "threshold_0_5": {
+                "precision": float(prec_05),
+                "recall": float(rec_05),
+                "confusion_matrix": {
+                    "true_negatives": int(cm_05[0, 0]),
+                    "false_positives": int(cm_05[0, 1]),
+                    "false_negatives": int(cm_05[1, 0]),
+                    "true_positives": int(cm_05[1, 1])
+                }
+            }
+        },
         "categorical_columns": cat_cols
     }
     with open("results/day1_baseline.json", "w") as f:
