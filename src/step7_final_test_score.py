@@ -332,19 +332,25 @@ def main():
         n_alerts = int(round((k / 1000.0) * n_te))
 
         # Model A at alert rate k
+        mask_a = np.zeros(n_te, dtype=bool)
+        mask_a[sort_a[:n_alerts]] = True
+        cost_a, miss_a, rev_a = compute_cost(y_te, amt_te, mask_a, c_rev)
         prec_a = float(y_sorted_a[:n_alerts].mean())
         rec_a = float(y_sorted_a[:n_alerts].sum() / total_test_frauds)
-        cost_a, miss_a, rev_a = compute_cost(y_te, amt_te, sort_a < n_alerts, c_rev)
 
         # Baseline at alert rate k
+        mask_base = np.zeros(n_te, dtype=bool)
+        mask_base[sort_base[:n_alerts]] = True
+        cost_base, miss_base, rev_base = compute_cost(y_te, amt_te, mask_base, c_rev)
         prec_base = float(y_sorted_base[:n_alerts].mean())
         rec_base = float(y_sorted_base[:n_alerts].sum() / total_test_frauds)
-        cost_base, miss_base, rev_base = compute_cost(y_te, amt_te, sort_base < n_alerts, c_rev)
 
         # Model B (retrained) at alert rate k
+        mask_b = np.zeros(n_te, dtype=bool)
+        mask_b[sort_b[:n_alerts]] = True
+        cost_b, miss_b, rev_b = compute_cost(y_te, amt_te, mask_b, c_rev)
         prec_b = float(y_sorted_b[:n_alerts].mean())
         rec_b = float(y_sorted_b[:n_alerts].sum() / total_test_frauds)
-        cost_b, miss_b, rev_b = compute_cost(y_te, amt_te, sort_b < n_alerts, c_rev)
 
         # Savings
         sav_a_nothing = cost_nothing - cost_a

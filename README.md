@@ -56,10 +56,11 @@ Adversarial classifiers (distinguishing sample time periods without fraud labels
 - **Validation vs. Test ROC-AUC**: **0.7284** (closer in time, but still distinct)
 - **Train vs. Test ROC-AUC**: **0.8886** (largest shift across the full 6-month timeline)
 
-### Drift Evidence
+### Drift Evidence & Limitations
 1. **`M1` Match Feature**: Missingness plunged from **69.6%** in Train down to **25.7%** in Test. Crucially, the fraud rate among missing `M1` records surged from **2.8%** to **9.9%**, while `M1 == True` remained constant (~2.0%).
 2. **`id_31` Browser Field**: Chronological progression of browser version numbers (Chrome 62/63 $\rightarrow$ 64 $\rightarrow$ 65 $\rightarrow$ 66).
 3. **Identity Coverage**: Identity table join match rate dropped from ~42% in early periods to 17–20% in later periods.
+4. **Adversarial Validation Scope**: Adversarial AUC diagnoses covariate shift (changes in input distributions), but does not detect concept drift (changes in how inputs relate to fraud, such as the `M1` missing fraud surge).
 
 ---
 
@@ -91,7 +92,7 @@ To isolate feature signal from early-stopping selection bias, models were traine
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | **Day 1 Raw Baseline (Fixed 350 Trees)** | 0.5624 | 0.0103 | 0.0195 | +0.0024 | Working reference |
 | **Core Rolling Windows** | 0.5655 | 0.0039 | 0.0073 | +0.0055 | Within noise band; kept for stationarity |
-| **Core + `D1_norm`** | **0.5809** | **0.0006** | **0.0012** | **+0.0209** | **Proven signal exceeding noise ($\sim 3\sigma$)** |
+| **Core + `D1_norm`** | **0.5809** | **0.0006** | **0.0012** | **+0.0209** | **Proven signal exceeding noise ($\sim 3\sigma$) on validation** |
 | **Core + `D1_norm` + `D2_norm`** | 0.5807 | 0.0096 | 0.0180 | +0.0207 | Zero mean gain; 16x higher variance |
 | **Core + Six D-Columns Normalized** | 0.5669 | 0.0034 | 0.0064 | +0.0069 | Earlier 0.6068 was early-stopping artifact |
 
@@ -119,14 +120,14 @@ Tested across 3 runs each (350 fixed trees, locked features):
 
 ## 9. Isotonic Calibration & Cost-Based Threshold Optimization
 ### Isotonic Recalibration (Validation 50/50 Split)
-Because raw tree outputs severely under-predicted probability in lower deciles, an isotonic calibrator was fit on the first half of validation (44,290 rows) and evaluated on the second half (44,291 rows):
+Because raw tree outputs under-predicted probability in lower deciles, an isotonic calibrator was fit on the first half of validation (44,290 rows) and evaluated on the second half (44,291 rows):
 - **Half 2 Actual Fraud Rate**: **3.272%**
 - **Raw Mean Predicted Probability**: **2.233%** (Brier score: `0.02265`)
 - **Calibrated Mean Predicted Probability**: **3.215%** (Brier score: `0.02245`)
 - **Calibration Status**: Improved but imperfect. While the aggregate mean matches within $-0.00057$, deciles 1 through 9 remain slightly under-predicted while the top decile is slightly over-predicted (23.6% calibrated vs 21.9% actual).
 
 ### Alert-Rate Optimization ($k = 1 \dots 300$ per 1,000 Transactions)
-Total validation fraud loss under "Flag Nothing" = **\$496,908** (3,042 frauds). Optimization evaluated across review costs of \$5, \$10, and \$25:
+Total validation fraud loss under "Flag Nothing" = **\$496,908** (3,042 frauds). Optimization evaluated across review costs of \$5, \$10, and \$25 (treated as assumptions):
 
 | Review Cost | Optimal Alert Rate ($k^*$) | Total Alerts | Precision | Recall | Total Financial Cost | Net Savings vs Flag Nothing |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -147,43 +148,58 @@ Evaluated on Validation Half 2:
 ---
 
 ## 10. Final Test Set Evaluation (Scored Once)
-The test set (88,581 rows, 3,083 frauds, \$469,608.50 total fraud loss) was scored strictly once using locked parameters and alert rates decided on validation:
+The test set (88,581 rows, 3,083 frauds, \$469,608.52 total fraud loss) was scored strictly once using locked parameters and alert rates decided on validation:
 
 ### Model Performance Summary
-| Model | Test PR-AUC | Test ROC-AUC | Precision @ 0.5 | Recall @ 0.5 | Notes |
+*All baseline numbers are derived strictly from a single saved prediction array (`test_preds_day1_baseline.npy`) run under the same stable-sort pipeline.*
+
+| Model | Test PR-AUC | Test ROC-AUC | Precision @ 0.5 | Recall @ 0.5 | Training Setup |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Day 1 Baseline** | 0.4681 | 0.8656 | 75.44% | 30.78% | Stopped on validation |
-| **Model A (Train-Only, 350 Trees)** | **0.4756** | **0.8569** | **72.77%** | **34.67%** | +0.0074 PR-AUC gain over baseline |
-| **Model B (Retrained Train+Val, 350 Trees)** | **0.5482** | **0.8954** | — | — | Supplementary; +0.0726 PR-AUC gain |
+| **Day 1 Baseline (Stable Sort)** | 0.4681 | 0.8656 | 73.32% | 30.75% (948 caught, 345 FP) | Train only (best iter 338, 22.0s) |
+| **Model A (Train-Only, 350 Trees)** | **0.4756** | **0.8569** | **72.77%** | **34.67%** (1,069 caught, 400 FP) | Train only (locked features, 16.9s) |
+| **Model B (Retrained Train+Val, 350 Trees)** | **0.5482** | **0.8954** | — | — | Train + Val (501,959 rows, 27.3s) |
 
-> **Evaluation Honesty**: As expected, Model A test PR-AUC (0.4756) is lower than validation PR-AUC (0.5809). Because all modeling decisions were selected on validation, validation scores reflect selection optimism, whereas the test set measures true forward generalization across temporal drift. Retraining on the most recent data (Model B) recovers this gap to 0.5482.
+### Key Test Insights
+1. **The Locked Features Did Not Show a Measurable Gain on Test**:
+   - Model A Test PR-AUC is **0.4756** vs **0.4681** for the baseline. The $+0.0075$ difference is well within the run-to-run training noise ($\sim 0.015 - 0.020$).
+   - Test ROC-AUC moved slightly lower (**0.8569** vs **0.8656**).
+   - While the feature set appeared clearly superior on the validation period (0.5809 vs 0.5624), that advantage was optimistic and driven by validation selection bias. On the unseen future test set, feature engineering alone did not meaningfully overcome drift.
+2. **Recency is the Decisive Lever**:
+   - Retraining on the combined dataset (all earlier data plus the most recent 31 days from validation) in **Model B** boosted Test PR-AUC to **0.5482** (+0.0726 gain over Model A) and Test ROC-AUC to **0.8954**.
+   - This large improvement confirms that temporal drift is the primary performance bottleneck, and keeping training data updated with recent periods is far more effective than static feature engineering.
 
-### Performance at Prescribed Alert Rates
-Evaluating Model A, the Day 1 Baseline, and Model B at identical fixed alert rates on the test set:
+### Performance at Prescribed Alert Rates (Corrected Costs)
+At each alert rate, recovered fraud dollars are verified to be strictly non-decreasing as alert volume increases:
 
-| Review Cost | Policy / Alert Rate | Precision | Recall | Total Cost | Context / Savings |
-| :--- | :--- | :---: | :---: | :---: | :--- |
-| **\$10 (Headline)** | **Flag Nothing** | 0.0% | 0.0% | \$469,609 | Baseline loss (all 3,083 frauds missed) |
-| | **Flag Everything** | 3.48% | 100.0% | \$885,810 | Excessive review overhead |
-| | **Threshold 0.5 (Model A)** | 72.77% | 34.67% | \$351,361 | 16.6 alerts/1k; 2,014 frauds missed |
-| | **Day 1 Baseline @ 97/1k** | 22.75% | 63.41% | \$507,280 | 1,955 frauds caught |
-| | **Model A @ 97 / 1k (8,592 alerts)** | **23.14%** | **64.48%** | **\$515,779** | 1,988 frauds caught (+33 over baseline) |
-| | **Model B (Retrained) @ 97 / 1k** | **25.15%** | **70.09%** | **\$512,751** | 2,161 frauds caught |
-| **\$5** | **Model A @ 152 / 1k (13,464 alerts)** | 16.47% | 71.91% | \$471,637 | 2,217 frauds caught |
-| | **Model B (Retrained) @ 152 / 1k** | 17.70% | 77.29% | \$459,806 | 2,383 frauds caught |
-| **\$25** | **Model A @ 44 / 1k (3,898 alerts)** | 40.71% | 51.48% | \$547,931 | 1,587 frauds caught |
-| | **Model B (Retrained) @ 44 / 1k** | 45.54% | 57.57% | \$545,742 | 1,775 frauds caught |
+| Review Cost | Policy / Alert Rate | Precision | Recall | Recovered Fraud Dollars | Total Financial Cost | Net Savings vs Flag Nothing |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
+| **\$10 (Headline)** | **Flag Nothing** | 0.0% | 0.0% | \$0 (0.0%) | \$469,609 | Baseline loss |
+| | **Flag Everything** | 3.48% | 100.0% | \$469,609 (100.0%) | \$885,810 | Overwhelming review cost |
+| | **Threshold 0.5 (Model A)** | 72.77% | 34.67% | \$132,937 (28.3%) | \$351,361 | 16.6 alerts/1k; \$336,671 missed |
+| | **Day 1 Baseline @ 97 / 1k** | 22.75% | 63.41% | \$290,130 (61.8%) | \$265,399 | +\$204,209 saved |
+| | **Model A @ 97 / 1k (8,592 alerts)** | **23.14%** | **64.48%** | **\$316,720 (67.4%)** | **\$238,808** | **+\$230,800 saved (+$26,591 vs Base)** |
+| | **Model B (Retrained) @ 97 / 1k** | **25.15%** | **70.09%** | **\$304,952 (64.9%)** | **\$250,576** | **+\$219,033 saved** |
+| **\$5** | **Day 1 Baseline @ 152 / 1k** | 16.41% | 71.65% | \$334,193 (71.2%) | \$202,736 | +\$266,872 saved |
+| | **Model A @ 152 / 1k (13,464 alerts)** | **16.47%** | **71.91%** | **\$358,016 (76.2%)** | **\$178,912** | **+\$290,696 saved (+$23,823 vs Base)** |
+| | **Model B (Retrained) @ 152 / 1k** | **17.70%** | **77.29%** | **\$350,492 (74.6%)** | **\$186,437** | **+\$283,171 saved** |
+| **\$25** | **Day 1 Baseline @ 44 / 1k** | 39.66% | 50.15% | \$211,935 (45.1%) | \$355,124 | +\$114,485 saved |
+| | **Model A @ 44 / 1k (3,898 alerts)** | **40.71%** | **51.48%** | **\$243,426 (51.8%)** | **\$323,633** | **+\$145,976 saved (+$31,491 vs Base)** |
+| | **Model B (Retrained) @ 44 / 1k** | **45.54%** | **57.57%** | **\$221,105 (47.1%)** | **\$345,953** | **+\$123,655 saved** |
 
 ### The Power of the Amount-Aware Rule on Test
-Under a fixed alert rate, ranking purely by probability flags many small-dollar frauds ($<\$20$) while missing high-dollar frauds. Using calibrated probabilities with the expected loss rule ($\mathbb{E}[\text{Loss}] = p_{\text{cal}} \times \text{amount} \ge c_{\text{rev}}$) produces decisive savings:
+By prioritizing expected loss ($\mathbb{E}[\text{Loss}] = p_{\text{cal}} \times \text{TransactionAmt} \ge c_{\text{rev}}$), the amount-aware rule selectively flags high-value fraud over low-value flags:
 
-| Review Cost | Operating Rule | Alerts / 1k | Precision | Recall | Total Financial Cost | Net Savings vs Fixed Rate | Net Savings vs Flag Nothing |
+| Review Cost | Policy | Alerts / 1k | Precision | Recall | Recovered Fraud Dollars | Total Financial Cost | Additional Savings over Fixed Rate |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **\$10 (Headline)** | **Fixed Alert Rate (97/1k)** | 97.0 / 1k | 23.14% | 64.48% | \$515,779 | — | -\$46,170 |
-| | **Amount-Aware Rule** | **98.9 / 1k** | **19.47%** | **55.34%** | **\$183,126** | **+\$332,653** | **+\$286,483 (61.0% saved)** |
-| **\$5** | **Fixed Alert Rate (152/1k)**| 152.0 / 1k | 16.47% | 71.91% | \$471,637 | — | -\$2,028 |
-| | **Amount-Aware Rule** | **156.7 / 1k** | **14.41%** | **64.87%** | **\$137,608** | **+\$334,029** | **+\$332,000 (70.7% saved)** |
-| **\$25** | **Fixed Alert Rate (44/1k)** | 44.0 / 1k | 40.71% | 51.48% | \$547,931 | — | -\$78,322 |
-| | **Amount-Aware Rule** | **46.9 / 1k** | **26.77%** | **36.10%** | **\$265,321** | **+\$282,610** | **+\$204,287 (43.5% saved)** |
+| **\$10 (Headline)** | **Fixed Alert Rate (97/1k)** | 97.0 / 1k | 23.14% | 64.48% | \$316,720 (67.4%) | \$238,808 | Working baseline |
+| | **Amount-Aware Rule** | **98.9 / 1k** | **19.47%** | **55.34%** | **\$374,103 (79.7%)** | **\$183,126** | **+\$55,682 additional savings** |
+| **\$5** | **Fixed Alert Rate (152/1k)**| 152.0 / 1k | 16.47% | 71.91% | \$358,016 (76.2%) | \$178,912 | Working baseline |
+| | **Amount-Aware Rule** | **156.7 / 1k** | **14.41%** | **64.87%** | **\$401,395 (85.5%)** | **\$137,608** | **+\$41,304 additional savings** |
+| **\$25** | **Fixed Alert Rate (44/1k)** | 44.0 / 1k | 40.71% | 51.48% | \$243,426 (51.8%) | \$323,633 | Working baseline |
+| | **Amount-Aware Rule** | **46.9 / 1k** | **26.77%** | **36.10%** | **\$308,237 (65.6%)** | **\$265,321** | **+\$58,311 additional savings** |
 
-**Key Takeaway**: A \$5,000 transaction with a 15% fraud probability represents an expected loss of \$750 (overwhelmingly justifying a \$10 review), whereas a \$10 transaction with an 80% fraud probability represents only \$8 expected loss. Incorporating calibrated probabilities and transaction amounts into alerting decisions saves over **\$330,000** compared to any probability-only ranking policy.
+### Test Calibration Diagnostic (Decile Reliability)
+Evaluated on the full test set (actual fraud prevalence: 3.480%, raw mean prob: 2.643%, calibrated mean prob: 3.689%):
+- In deciles 1 through 7, calibrated probabilities are slightly lower than actual rates (e.g., decile 1 calibrated is 0.23% vs 0.60% actual).
+- In deciles 8 through 10, calibrated probabilities slightly overestimate actual rates (top decile calibrated is 26.4% vs 22.6% actual).
+- The top decile concentrates 2,005 out of 3,083 total frauds, directly aligning with the 64.5% recall achieved at the 97-per-1,000 alert rate.
