@@ -5,27 +5,31 @@
     "categorical_features_count": 31,
     "transaction_cat_features_count": 14,
     "identity_cat_features_count": 17,
-    "dropped_columns": ["isFraud", "TransactionID", "TransactionDT"]
+    "dropped_columns": [
+      "isFraud",
+      "TransactionID",
+      "TransactionDT"
+    ]
   },
   "splits": {
     "train": {
       "rows": 413378,
-      "share": 0.70,
-      "fraud_rate": 0.03517,
+      "share": 0.7,
+      "fraud_rate": 0.03516878014795175,
       "min_transaction_dt": 86400,
       "max_transaction_dt": 10437996
     },
     "validation": {
       "rows": 88581,
       "share": 0.15,
-      "fraud_rate": 0.03434,
+      "fraud_rate": 0.03434145019812375,
       "min_transaction_dt": 10438003,
       "max_transaction_dt": 13151840
     },
     "test": {
       "rows": 88581,
       "share": 0.15,
-      "fraud_rate": 0.03480,
+      "fraud_rate": 0.03480430340592226,
       "min_transaction_dt": 13151880,
       "max_transaction_dt": 15811131
     }
@@ -55,28 +59,54 @@
     }
   },
   "metrics": {
-    "dummy_pr_auc": 0.03480,
-    "validation_pr_auc": 0.56300,
-    "test_pr_auc": 0.46857,
-    "validation_test_pr_auc_gap": 0.09443,
-    "test_roc_auc": 0.86264,
-    "best_iteration": 599,
+    "dummy_pr_auc": 0.03480430340592226,
+    "validation_pr_auc": 0.5495133496923409,
+    "test_pr_auc": 0.4681483920473846,
+    "validation_test_pr_auc_gap": 0.08136495764495627,
+    "test_roc_auc": 0.865648944850914,
+    "best_iteration": 338,
     "threshold_0_5": {
-      "precision": 0.75437,
-      "recall": 0.30782,
+      "precision": 0.7331786542923434,
+      "recall": 0.3074927019137204,
       "confusion_matrix": {
-        "true_negatives": 85189,
-        "false_positives": 309,
-        "false_negatives": 2134,
-        "true_positives": 949
+        "true_negatives": 85153,
+        "false_positives": 345,
+        "false_negatives": 2135,
+        "true_positives": 948
       }
     }
   },
   "categorical_columns": [
-    "ProductCD", "card4", "card6", "P_emaildomain", "R_emaildomain",
-    "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9",
-    "id_12", "id_15", "id_16", "id_23", "id_27", "id_28", "id_29",
-    "id_30", "id_31", "id_33", "id_34", "id_35", "id_36", "id_37",
-    "id_38", "DeviceType", "DeviceInfo"
+    "ProductCD",
+    "card4",
+    "card6",
+    "P_emaildomain",
+    "R_emaildomain",
+    "M1",
+    "M2",
+    "M3",
+    "M4",
+    "M5",
+    "M6",
+    "M7",
+    "M8",
+    "M9",
+    "id_12",
+    "id_15",
+    "id_16",
+    "id_23",
+    "id_27",
+    "id_28",
+    "id_29",
+    "id_30",
+    "id_31",
+    "id_33",
+    "id_34",
+    "id_35",
+    "id_36",
+    "id_37",
+    "id_38",
+    "DeviceType",
+    "DeviceInfo"
   ]
 }

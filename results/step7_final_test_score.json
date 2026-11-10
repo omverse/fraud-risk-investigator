@@ -1,0 +1,281 @@
+{
+  "dataset_split": {
+    "total_rows": 590540,
+    "train_rows": 413378,
+    "val_rows": 88581,
+    "test_rows": 88581,
+    "test_frauds": 3083,
+    "test_fraud_rate": 0.03480430340592226,
+    "test_total_fraud_loss_flag_nothing": 469608.5
+  },
+  "day1_baseline_on_test": {
+    "test_pr_auc": 0.4681483920473846,
+    "test_roc_auc": 0.865648944850914,
+    "threshold_0_5": {
+      "alerts": 1258,
+      "precision": 0.7543720190779014,
+      "recall": 0.3078170613039247,
+      "confusion_matrix": {
+        "TN": 85189,
+        "FP": 309,
+        "FN": 2134,
+        "TP": 949
+      }
+    }
+  },
+  "model_a_train_only": {
+    "test_pr_auc": 0.4755657856984407,
+    "test_roc_auc": 0.856912055811576,
+    "training_time_sec": 16.915937185287476,
+    "threshold_0_5": {
+      "alerts": 1469,
+      "alerts_per_1000": 16.58369176234181,
+      "precision": 0.7277059223961879,
+      "recall": 0.3467401881284463,
+      "confusion_matrix": {
+        "TN": 85098,
+        "FP": 400,
+        "FN": 2014,
+        "TP": 1069
+      },
+      "cost_by_review_cost": {
+        "$5": 344016.125,
+        "$10": 351361.125,
+        "$25": 373396.125
+      }
+    }
+  },
+  "model_b_retrained": {
+    "test_pr_auc": 0.5481594043863177,
+    "test_roc_auc": 0.895406426398018,
+    "training_time_sec": 27.27669095993042
+  },
+  "operating_points": {
+    "$10": {
+      "review_cost": 10.0,
+      "alert_rate_k": 97,
+      "total_alerts": 8592,
+      "model_a_train_only": {
+        "precision": 0.2313780260707635,
+        "recall": 0.6448264677262406,
+        "total_cost": 515778.53125,
+        "missed_fraud_cost": 429858.53125,
+        "review_cost_total": 85920.0,
+        "savings_vs_nothing": -46170.03125,
+        "savings_vs_threshold_0_5": -164417.40625,
+        "savings_vs_day1_baseline_at_same_rate": -8498.53125
+      },
+      "day1_baseline_at_same_rate": {
+        "precision": 0.2275372439478585,
+        "recall": 0.6341226078494973,
+        "total_cost": 507280.0,
+        "missed_fraud_cost": 421360.0,
+        "review_cost_total": 85920.0
+      },
+      "model_b_retrained": {
+        "precision": 0.25151303538175046,
+        "recall": 0.7009406422315926,
+        "total_cost": 512750.875,
+        "missed_fraud_cost": 426830.875,
+        "review_cost_total": 85920.0,
+        "savings_vs_nothing": -43142.375
+      },
+      "flag_nothing_cost": 469608.5,
+      "flag_everything_cost": 885810.0,
+      "threshold_0_5_cost": 351361.125
+    },
+    "$5": {
+      "review_cost": 5.0,
+      "alert_rate_k": 152,
+      "total_alerts": 13464,
+      "model_a_train_only": {
+        "precision": 0.1646613190730838,
+        "recall": 0.719104768083036,
+        "total_cost": 471636.875,
+        "missed_fraud_cost": 404316.875,
+        "review_cost_total": 67320.0,
+        "savings_vs_nothing": -2028.375,
+        "savings_vs_threshold_0_5": -127620.75,
+        "savings_vs_day1_baseline_at_same_rate": -6185.84375
+      },
+      "day1_baseline_at_same_rate": {
+        "precision": 0.16406714200831848,
+        "recall": 0.7165098929614012,
+        "total_cost": 465451.03125,
+        "missed_fraud_cost": 398131.03125,
+        "review_cost_total": 67320.0
+      },
+      "model_b_retrained": {
+        "precision": 0.17699049316696375,
+        "recall": 0.7729484268569575,
+        "total_cost": 459805.5,
+        "missed_fraud_cost": 392485.5,
+        "review_cost_total": 67320.0,
+        "savings_vs_nothing": 9803.0
+      },
+      "flag_nothing_cost": 469608.5,
+      "flag_everything_cost": 442905.0,
+      "threshold_0_5_cost": 344016.125
+    },
+    "$25": {
+      "review_cost": 25.0,
+      "alert_rate_k": 44,
+      "total_alerts": 3898,
+      "model_a_train_only": {
+        "precision": 0.40713186249358646,
+        "recall": 0.5147583522542978,
+        "total_cost": 547931.0,
+        "missed_fraud_cost": 450481.0,
+        "review_cost_total": 97450.0,
+        "savings_vs_nothing": -78322.5,
+        "savings_vs_threshold_0_5": -174534.875,
+        "savings_vs_day1_baseline_at_same_rate": -2604.84375
+      },
+      "day1_baseline_at_same_rate": {
+        "precision": 0.396613648024628,
+        "recall": 0.5014596172559196,
+        "total_cost": 545326.15625,
+        "missed_fraud_cost": 447876.15625,
+        "review_cost_total": 97450.0
+      },
+      "model_b_retrained": {
+        "precision": 0.45536172396100566,
+        "recall": 0.5757379176127149,
+        "total_cost": 545742.0,
+        "missed_fraud_cost": 448292.0,
+        "review_cost_total": 97450.0,
+        "savings_vs_nothing": -76133.5
+      },
+      "flag_nothing_cost": 469608.5,
+      "flag_everything_cost": 2214525.0,
+      "threshold_0_5_cost": 373396.125
+    }
+  },
+  "amount_aware_rule_test": {
+    "$10": {
+      "review_cost": 10.0,
+      "alerts_per_1000": 98.9151172373308,
+      "total_alerts": 8762,
+      "precision": 0.19470440538689796,
+      "recall": 0.553357119688615,
+      "total_cost": 183125.6328125,
+      "missed_fraud_cost": 95505.6328125,
+      "review_cost_total": 87620.0,
+      "savings_vs_fixed_alert_rate": 332652.8984375,
+      "savings_vs_nothing": 286482.8671875
+    },
+    "$5": {
+      "review_cost": 5.0,
+      "alerts_per_1000": 156.68145539111097,
+      "total_alerts": 13879,
+      "precision": 0.144102601051949,
+      "recall": 0.6487187804086928,
+      "total_cost": 137608.078125,
+      "missed_fraud_cost": 68213.078125,
+      "review_cost_total": 69395.0,
+      "savings_vs_fixed_alert_rate": 334028.796875,
+      "savings_vs_nothing": 332000.421875
+    },
+    "$25": {
+      "review_cost": 25.0,
+      "alerts_per_1000": 46.940088732346666,
+      "total_alerts": 4158,
+      "precision": 0.2676767676767677,
+      "recall": 0.36101200129743755,
+      "total_cost": 265321.46875,
+      "missed_fraud_cost": 161371.46875,
+      "review_cost_total": 103950.0,
+      "savings_vs_fixed_alert_rate": 282609.53125,
+      "savings_vs_nothing": 204287.03125
+    }
+  },
+  "calibration_diagnostic_test": {
+    "test_actual_fraud_rate": 0.03480430340592226,
+    "test_raw_mean_prob": 0.026430688798427582,
+    "test_calibrated_mean_prob": 0.03689068555831909,
+    "test_raw_brier_score": 0.024134889245033264,
+    "test_calibrated_brier_score": 0.023840395733714104,
+    "decile_reliability_table": [
+      {
+        "bin": "(-0.0009999795, 9.14e-05]",
+        "count": 8859,
+        "frauds": 53,
+        "mean_p_raw": 3.9663220377406105e-05,
+        "mean_p_cal": 0.002318781800568104,
+        "actual_rate": 0.005982616548143131
+      },
+      {
+        "bin": "(9.14e-05, 0.000275]",
+        "count": 8858,
+        "frauds": 58,
+        "mean_p_raw": 0.0001752116804709658,
+        "mean_p_cal": 0.002392379567027092,
+        "actual_rate": 0.006547753443215173
+      },
+      {
+        "bin": "(0.000275, 0.000582]",
+        "count": 8858,
+        "frauds": 68,
+        "mean_p_raw": 0.0004152750479988754,
+        "mean_p_cal": 0.00304866349324584,
+        "actual_rate": 0.007676676450666065
+      },
+      {
+        "bin": "(0.000582, 0.00107]",
+        "count": 8858,
+        "frauds": 79,
+        "mean_p_raw": 0.0008060842519626021,
+        "mean_p_cal": 0.005156271159648895,
+        "actual_rate": 0.008918491758862045
+      },
+      {
+        "bin": "(0.00107, 0.00186]",
+        "count": 8858,
+        "frauds": 81,
+        "mean_p_raw": 0.0014404291287064552,
+        "mean_p_cal": 0.006612027529627085,
+        "actual_rate": 0.009144276360352224
+      },
+      {
+        "bin": "(0.00186, 0.00316]",
+        "count": 8858,
+        "frauds": 96,
+        "mean_p_raw": 0.0024547285865992308,
+        "mean_p_cal": 0.008808623068034649,
+        "actual_rate": 0.010837660871528562
+      },
+      {
+        "bin": "(0.00316, 0.00551]",
+        "count": 8858,
+        "frauds": 140,
+        "mean_p_raw": 0.004206454381346703,
+        "mean_p_cal": 0.01360267773270607,
+        "actual_rate": 0.015804922104312485
+      },
+      {
+        "bin": "(0.00551, 0.0109]",
+        "count": 8858,
+        "frauds": 180,
+        "mean_p_raw": 0.007786222733557224,
+        "mean_p_cal": 0.021351145580410957,
+        "actual_rate": 0.020320614134116052
+      },
+      {
+        "bin": "(0.0109, 0.0304]",
+        "count": 8858,
+        "frauds": 323,
+        "mean_p_raw": 0.017954517155885696,
+        "mean_p_cal": 0.04155851528048515,
+        "actual_rate": 0.03646421314066381
+      },
+      {
+        "bin": "(0.0304, 1.0]",
+        "count": 8858,
+        "frauds": 2005,
+        "mean_p_raw": 0.2290312796831131,
+        "mean_p_cal": 0.26406168937683105,
+        "actual_rate": 0.2263490629939038
+      }
+    ]
+  }
+}

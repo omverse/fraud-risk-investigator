@@ -1,0 +1,30 @@
+[
+  {
+    "model": "XGBoost (Locked Features, Unweighted)",
+    "mean_val_pr_auc": 0.58085,
+    "std_n_minus_1": 0.0006,
+    "training_time": "22.2s",
+    "notes": "350 fixed trees, hist method, native categorical support"
+  },
+  {
+    "model": "XGBoost (scale_pos_weight = 5.0)",
+    "mean_val_pr_auc": 0.5809585749709695,
+    "std_n_minus_1": 0.0017563650706909379,
+    "training_time": "31.7s",
+    "notes": "Mild weighting check (sqrt(27)); also underperforms unweighted"
+  },
+  {
+    "model": "Random Forest",
+    "mean_val_pr_auc": 0.4786804289441986,
+    "std_n_minus_1": 0.0016751889952382277,
+    "training_time": "31.2s",
+    "notes": "150 trees, max_depth=14, sqrt features, native NaNs"
+  },
+  {
+    "model": "Isolation Forest (Unsupervised Reference)",
+    "mean_val_pr_auc": 0.1841916592113685,
+    "std_n_minus_1": null,
+    "training_time": "1.6s",
+    "notes": "Numeric columns only; demonstrates gap between unsupervised and supervised"
+  }
+]

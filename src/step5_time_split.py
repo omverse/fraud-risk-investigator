@@ -42,8 +42,8 @@ def main():
     print("Check passed: Both are int32 or larger, ensuring no overflow!")
 
     print("\n--- Step 5: Time-based split ---")
-    # 1. Sort by TransactionDT
-    df = df.sort_values("TransactionDT").reset_index(drop=True)
+    # 1. Sort by TransactionDT (stable sort)
+    df = df.sort_values("TransactionDT", kind="stable").reset_index(drop=True)
 
     n_total = len(df)
     n_train = int(n_total * 0.70)

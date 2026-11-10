@@ -47,19 +47,48 @@ def main():
     print("Downcasting memory...")
     df = reduce_mem_usage(df)
 
-    # Sort strictly by TransactionDT
-    print("Sorting by TransactionDT...")
-    df = df.sort_values("TransactionDT").reset_index(drop=True)
+    # Sort strictly by TransactionDT with a stable sort
+    print("Sorting by TransactionDT (stable sort)...")
+    df = df.sort_values("TransactionDT", kind="stable").reset_index(drop=True)
 
     n = len(df)
     i1, i2 = int(0.70 * n), int(0.85 * n)
+
+    # Capture time ranges and splits before dropping TransactionDT
+    dt_series = df["TransactionDT"]
+    splits_info = {
+        "train": {
+            "rows": int(i1),
+            "share": round(i1 / n, 2),
+            "fraud_rate": float(df["isFraud"].iloc[:i1].mean()),
+            "min_transaction_dt": int(dt_series.iloc[:i1].min()),
+            "max_transaction_dt": int(dt_series.iloc[:i1].max())
+        },
+        "validation": {
+            "rows": int(i2 - i1),
+            "share": round((i2 - i1) / n, 2),
+            "fraud_rate": float(df["isFraud"].iloc[i1:i2].mean()),
+            "min_transaction_dt": int(dt_series.iloc[i1:i2].min()),
+            "max_transaction_dt": int(dt_series.iloc[i1:i2].max())
+        },
+        "test": {
+            "rows": int(n - i2),
+            "share": round((n - i2) / n, 2),
+            "fraud_rate": float(df["isFraud"].iloc[i2:].mean()),
+            "min_transaction_dt": int(dt_series.iloc[i2:].min()),
+            "max_transaction_dt": int(dt_series.iloc[i2:].max())
+        }
+    }
 
     y = df["isFraud"]
     X = df.drop(columns=["isFraud", "TransactionID", "TransactionDT"])
 
     cat_cols = [c for c in X.columns if not pd.api.types.is_numeric_dtype(X[c])]
-    print(f"Number of categorical columns detected: {len(cat_cols)}")
-    print("Categorical columns:", cat_cols)
+    trans_known_cats = {"ProductCD", "card4", "card6", "P_emaildomain", "R_emaildomain", 
+                        "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9"}
+    trans_cat_cols = [c for c in cat_cols if c in trans_known_cats]
+    id_cat_cols = [c for c in cat_cols if c not in trans_known_cats]
+    print(f"Number of categorical columns detected: {len(cat_cols)} ({len(trans_cat_cols)} transaction, {len(id_cat_cols)} identity)")
 
     print("Splitting into Train (70%), Validation (15%), Test (15%)...")
     X_tr, X_va, X_te = (X.iloc[:i1].copy(), X.iloc[i1:i2].copy(), X.iloc[i2:].copy())
@@ -147,14 +176,17 @@ def main():
     print(f"\nPrecision-Recall curve saved to: {pr_curve_path}")
 
     # Save metrics JSON
-    import sys, platform
+    import sys, platform, sklearn
     metrics = {
         "dataset": {
             "total_rows": int(n),
             "total_features": int(X.shape[1]),
             "categorical_features_count": len(cat_cols),
+            "transaction_cat_features_count": len(trans_cat_cols),
+            "identity_cat_features_count": len(id_cat_cols),
             "dropped_columns": ["isFraud", "TransactionID", "TransactionDT"]
         },
+        "splits": splits_info,
         "model_config": {
             "model_name": "XGBClassifier",
             "random_seed": 42,
@@ -173,7 +205,7 @@ def main():
             "platform": platform.platform(),
             "libraries": {
                 "xgboost": xgb.__version__,
-                "scikit-learn": "1.9.1",
+                "scikit-learn": sklearn.__version__,
                 "pandas": pd.__version__,
                 "numpy": np.__version__,
                 "matplotlib": plt.matplotlib.__version__

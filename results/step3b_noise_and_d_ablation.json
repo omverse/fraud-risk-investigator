@@ -1,0 +1,127 @@
+{
+  "baseline_5_runs": {
+    "runs": [
+      {
+        "run": 1,
+        "seed": 42,
+        "val_pr_auc": 0.56011,
+        "best_iteration": 217,
+        "time_s": 52.4
+      },
+      {
+        "run": 2,
+        "seed": 101,
+        "val_pr_auc": 0.5596,
+        "best_iteration": 579,
+        "time_s": 134.3
+      },
+      {
+        "run": 3,
+        "seed": 202,
+        "val_pr_auc": 0.56958,
+        "best_iteration": 365,
+        "time_s": 111.6
+      },
+      {
+        "run": 4,
+        "seed": 303,
+        "val_pr_auc": 0.54957,
+        "best_iteration": 215,
+        "time_s": 70.1
+      },
+      {
+        "run": 5,
+        "seed": 404,
+        "val_pr_auc": 0.56095,
+        "best_iteration": 443,
+        "time_s": 119.1
+      }
+    ],
+    "mean_val_pr_auc": 0.55996,
+    "std_val_pr_auc": 0.0071,
+    "min_val_pr_auc": 0.54957,
+    "max_val_pr_auc": 0.56958,
+    "spread_yardstick": 0.02,
+    "best_iteration_mean": 363.8
+  },
+  "core_rolling_model": {
+    "val_pr_auc": 0.56978,
+    "best_iteration": 317
+  },
+  "single_column_d_ablation": [
+    {
+      "col": "D1",
+      "val_pr_auc": 0.58801,
+      "gain_vs_core": 0.01823,
+      "gain_vs_base_mean": 0.02805,
+      "best_iter": 629
+    },
+    {
+      "col": "D2",
+      "val_pr_auc": 0.56998,
+      "gain_vs_core": 0.0002,
+      "gain_vs_base_mean": 0.01002,
+      "best_iter": 287
+    },
+    {
+      "col": "D4",
+      "val_pr_auc": 0.56886,
+      "gain_vs_core": -0.00092,
+      "gain_vs_base_mean": 0.0089,
+      "best_iter": 397
+    },
+    {
+      "col": "D6",
+      "val_pr_auc": 0.56285,
+      "gain_vs_core": -0.00693,
+      "gain_vs_base_mean": 0.00289,
+      "best_iter": 410
+    },
+    {
+      "col": "D11",
+      "val_pr_auc": 0.56266,
+      "gain_vs_core": -0.00712,
+      "gain_vs_base_mean": 0.0027,
+      "best_iter": 293
+    },
+    {
+      "col": "D15",
+      "val_pr_auc": 0.54205,
+      "gain_vs_core": -0.02774,
+      "gain_vs_base_mean": -0.01791,
+      "best_iter": 351
+    },
+    {
+      "col": "D14",
+      "val_pr_auc": 0.52178,
+      "gain_vs_core": -0.04801,
+      "gain_vs_base_mean": -0.03818,
+      "best_iter": 133
+    },
+    {
+      "col": "D10",
+      "val_pr_auc": 0.52126,
+      "gain_vs_core": -0.04852,
+      "gain_vs_base_mean": -0.0387,
+      "best_iter": 72
+    }
+  ],
+  "combined_winners": {
+    "columns": [
+      "D1",
+      "D2"
+    ],
+    "val_pr_auc": 0.59688,
+    "best_iteration": 436,
+    "gain_vs_core": 0.0271,
+    "gain_vs_baseline_mean": 0.03692,
+    "ci_vs_baseline": [
+      0.02711,
+      0.04536
+    ],
+    "ci_vs_core": [
+      0.01664,
+      0.0349
+    ]
+  }
+}
