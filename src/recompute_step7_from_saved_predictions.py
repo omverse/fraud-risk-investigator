@@ -10,6 +10,25 @@ def compute_cost(y_true, amt_arr, alerts_bool, review_cost):
     review_total = float(review_cost * alerts_bool.sum())
     return missed_cost + review_total, missed_cost, review_total
 
+def paired_bootstrap_ci(vec_diff, n_boot=1000, seed=42):
+    rng = np.random.default_rng(seed)
+    n = len(vec_diff)
+    obs = float(vec_diff.sum())
+    boots = np.empty(n_boot)
+    for b in range(n_boot):
+        idx = rng.integers(0, n, size=n)
+        boots[b] = vec_diff[idx].sum()
+    ci_lo, ci_hi = np.percentile(boots, [2.5, 97.5])
+    return {
+        "observed_diff": obs,
+        "boot_mean": float(boots.mean()),
+        "ci_95_lower": float(ci_lo),
+        "ci_95_upper": float(ci_hi),
+        "prop_positive": float(np.mean(boots > 0)),
+        "n_boot": n_boot,
+        "seed": seed
+    }
+
 def main():
     print("=" * 70)
     print("Recomputing Step 7 Test Costs directly from Saved Predictions")
@@ -58,19 +77,46 @@ def main():
     print(f"Model A (Train-Only):     Test PR-AUC = {pr_auc_a:.5f} | ROC-AUC = {roc_auc_a:.5f} (Gain: {pr_auc_a - base_pr_auc:+.5f})")
     print(f"Model B (Retrained T+V):  Test PR-AUC = {pr_auc_b:.5f} | ROC-AUC = {roc_auc_b:.5f} (Gain over Model A: {pr_auc_b - pr_auc_a:+.5f})")
 
-    # 3. Test Monotonicity of Recovered Dollars for all models
-    print("\n3. Testing monotonicity of recovered fraud dollars as alert volume increases...")
-    for name, p in [("Baseline", p_base), ("Model A", p_a), ("Model B", p_b)]:
-        sort_idx = np.argsort(-p)
-        y_sorted = y_te[sort_idx]
-        amt_sorted = amt_te[sort_idx]
-        rec_cum = np.cumsum(amt_sorted * y_sorted)
-        assert np.all(np.diff(rec_cum) >= -1e-6), f"{name}: Recovered dollars decreased!"
-        print(f"  [PASS] {name}: Recovered dollars strictly non-decreasing across all {n_te:,} ranks.")
+    # Helper to get boolean alert mask in original row order
+    def get_top_k_mask(p, k):
+        n_alerts = int(round((k / 1000.0) * n_te))
+        sort_idx = np.argsort(-p, kind="stable")
+        mask = np.zeros(n_te, dtype=bool)
+        mask[sort_idx[:n_alerts]] = True
+        return mask
+
+    # 3. Strict Policy Subset Consistency Checks (smaller policy strictly inside larger policy)
+    print("\n3. Running Policy Subset & Recovered Dollar Consistency Checks...")
+    al_05_a = (p_a >= 0.5)
+    mask_a_44 = get_top_k_mask(p_a, 44)
+    mask_a_97 = get_top_k_mask(p_a, 97)
+    mask_a_152 = get_top_k_mask(p_a, 152)
+
+    # Check Model A strict subset hierarchy: (p >= 0.5) <= (44/1k) <= (97/1k) <= (152/1k)
+    assert np.all(al_05_a <= mask_a_44), "Model A: threshold 0.5 is NOT a subset of 44/1k!"
+    assert np.all(mask_a_44 <= mask_a_97), "Model A: 44/1k is NOT a subset of 97/1k!"
+    assert np.all(mask_a_97 <= mask_a_152), "Model A: 97/1k is NOT a subset of 152/1k!"
+
+    rec_a_05 = float(amt_te[(y_te == 1) & al_05_a].sum())
+    rec_a_44 = float(amt_te[(y_te == 1) & mask_a_44].sum())
+    rec_a_97 = float(amt_te[(y_te == 1) & mask_a_97].sum())
+    rec_a_152 = float(amt_te[(y_te == 1) & mask_a_152].sum())
+    assert rec_a_05 <= rec_a_44 <= rec_a_97 <= rec_a_152, "Model A: recovered dollars failed nested subset check!"
+    print(f"  [PASS] Model A subset & recovery check: ${rec_a_05:,.0f} (0.5) <= ${rec_a_44:,.0f} (44/1k) <= ${rec_a_97:,.0f} (97/1k) <= ${rec_a_152:,.0f} (152/1k)")
+
+    for name, p in [("Baseline", p_base), ("Model B", p_b)]:
+        m_44 = get_top_k_mask(p, 44)
+        m_97 = get_top_k_mask(p, 97)
+        m_152 = get_top_k_mask(p, 152)
+        assert np.all(m_44 <= m_97) and np.all(m_97 <= m_152), f"{name}: failed subset inclusion!"
+        r_44 = float(amt_te[(y_te == 1) & m_44].sum())
+        r_97 = float(amt_te[(y_te == 1) & m_97].sum())
+        r_152 = float(amt_te[(y_te == 1) & m_152].sum())
+        assert r_44 <= r_97 <= r_152, f"{name}: failed recovered dollars monotonicity!"
+        print(f"  [PASS] {name} subset & recovery check: ${r_44:,.0f} (44/1k) <= ${r_97:,.0f} (97/1k) <= ${r_152:,.0f} (152/1k)")
 
     # 4. Threshold 0.5 Benchmarks
     print("\n4. Threshold 0.5 Evaluation (all numbers from single saved prediction arrays)...")
-    # Baseline at 0.5
     al_05_base = (p_base >= 0.5)
     prec_05_base = float(precision_score(y_te, al_05_base, zero_division=0))
     rec_05_base = float(recall_score(y_te, al_05_base, zero_division=0))
@@ -78,8 +124,6 @@ def main():
     cm_base = confusion_matrix(y_te, al_05_base)
     cost_05_base_10, miss_05_base, _ = compute_cost(y_te, amt_te, al_05_base, 10.0)
 
-    # Model A at 0.5
-    al_05_a = (p_a >= 0.5)
     prec_05_a = float(precision_score(y_te, al_05_a, zero_division=0))
     rec_05_a = float(recall_score(y_te, al_05_a, zero_division=0))
     n_al_05_a = int(al_05_a.sum())
@@ -101,50 +145,40 @@ def main():
         (25.0, 44, "$25")
     ]
 
-    sort_a = np.argsort(-p_a)
-    y_sorted_a = y_te[sort_a]
-    amt_sorted_a = amt_te[sort_a]
-
-    sort_base = np.argsort(-p_base)
-    y_sorted_base = y_te[sort_base]
-    amt_sorted_base = amt_te[sort_base]
-
-    sort_b = np.argsort(-p_b)
-    y_sorted_b = y_te[sort_b]
-    amt_sorted_b = amt_te[sort_b]
-
     operating_points_data = {}
     report_rows = []
+    masks_by_k = {"Model A": {}, "Baseline": {}, "Model B": {}}
 
     for c_rev, k, label in alert_rates:
         key = label.split()[0]
         n_alerts = int(round((k / 1000.0) * n_te))
 
+        mask_a = get_top_k_mask(p_a, k)
+        mask_base = get_top_k_mask(p_base, k)
+        mask_b = get_top_k_mask(p_b, k)
+
+        masks_by_k["Model A"][k] = mask_a
+        masks_by_k["Baseline"][k] = mask_base
+        masks_by_k["Model B"][k] = mask_b
+
         # Model A
-        mask_a = np.zeros(n_te, dtype=bool)
-        mask_a[sort_a[:n_alerts]] = True
         cost_a, miss_a, rev_a = compute_cost(y_te, amt_te, mask_a, c_rev)
         caught_amt_a = total_test_fraud_amt - miss_a
-        prec_a = float(y_sorted_a[:n_alerts].mean())
-        rec_a = float(y_sorted_a[:n_alerts].sum() / total_test_frauds)
+        prec_a = float(y_te[mask_a].mean())
+        rec_a = float(y_te[mask_a].sum() / total_test_frauds)
 
         # Baseline
-        mask_base = np.zeros(n_te, dtype=bool)
-        mask_base[sort_base[:n_alerts]] = True
         cost_base, miss_base, rev_base = compute_cost(y_te, amt_te, mask_base, c_rev)
         caught_amt_base = total_test_fraud_amt - miss_base
-        prec_base = float(y_sorted_base[:n_alerts].mean())
-        rec_base = float(y_sorted_base[:n_alerts].sum() / total_test_frauds)
+        prec_base = float(y_te[mask_base].mean())
+        rec_base = float(y_te[mask_base].sum() / total_test_frauds)
 
         # Model B
-        mask_b = np.zeros(n_te, dtype=bool)
-        mask_b[sort_b[:n_alerts]] = True
         cost_b, miss_b, rev_b = compute_cost(y_te, amt_te, mask_b, c_rev)
         caught_amt_b = total_test_fraud_amt - miss_b
-        prec_b = float(y_sorted_b[:n_alerts].mean())
-        rec_b = float(y_sorted_b[:n_alerts].sum() / total_test_frauds)
+        prec_b = float(y_te[mask_b].mean())
+        rec_b = float(y_te[mask_b].sum() / total_test_frauds)
 
-        # Confirm consistency: missed_amount must be identical across review costs for the same k!
         sav_a_nothing = total_test_fraud_amt - cost_a
         sav_a_05 = cost_05_a[key] - cost_a
         sav_a_base = cost_base - cost_a
@@ -209,10 +243,12 @@ def main():
     print("\n6. Evaluating Amount-Aware Rule with Calibrated Probabilities...")
     amt_aware_results = {}
     amt_report_rows = []
+    masks_amt = {}
 
     for c_rev, k, label in alert_rates:
         key = label.split()[0]
         al_amt = (p_cal * amt_te >= c_rev)
+        masks_amt[key] = al_amt
         n_amt_alerts = int(al_amt.sum())
         k_amt = float((n_amt_alerts / n_te) * 1000.0)
         
@@ -252,8 +288,43 @@ def main():
 
     print(pd.DataFrame(amt_report_rows).to_string(index=False))
 
-    # 7. Test Calibration Diagnostic
-    print("\n7. Test Calibration Diagnostic...")
+    # 7. Paired Bootstrap (1,000 resamples over test rows)
+    print("\n7. Paired Bootstrap Over Test Rows (1,000 resamples, 95% CIs)...")
+    def row_cost(m, c_rev):
+        return y_te * amt_te * (~m) + c_rev * m
+    def row_recov(m):
+        return y_te * amt_te * m
+
+    boot_results = {
+        "model_a_vs_baseline_97_per_1k_recovered_dollars": paired_bootstrap_ci(
+            row_recov(masks_by_k["Model A"][97]) - row_recov(masks_by_k["Baseline"][97])
+        ),
+        "model_a_vs_baseline_97_per_1k_cost_savings_at_10": paired_bootstrap_ci(
+            row_cost(masks_by_k["Baseline"][97], 10.0) - row_cost(masks_by_k["Model A"][97], 10.0)
+        ),
+        "model_b_vs_model_a_97_per_1k_recovered_dollars": paired_bootstrap_ci(
+            row_recov(masks_by_k["Model B"][97]) - row_recov(masks_by_k["Model A"][97])
+        ),
+        "model_b_vs_model_a_97_per_1k_cost_savings_at_10": paired_bootstrap_ci(
+            row_cost(masks_by_k["Model A"][97], 10.0) - row_cost(masks_by_k["Model B"][97], 10.0)
+        ),
+        "amount_aware_vs_fixed_97_per_1k_savings_at_10": paired_bootstrap_ci(
+            row_cost(masks_by_k["Model A"][97], 10.0) - row_cost(masks_amt["$10"], 10.0)
+        ),
+        "amount_aware_vs_fixed_152_per_1k_savings_at_5": paired_bootstrap_ci(
+            row_cost(masks_by_k["Model A"][152], 5.0) - row_cost(masks_amt["$5"], 5.0)
+        ),
+        "amount_aware_vs_fixed_44_per_1k_savings_at_25": paired_bootstrap_ci(
+            row_cost(masks_by_k["Model A"][44], 25.0) - row_cost(masks_amt["$25"], 25.0)
+        )
+    }
+
+    for k_boot, v_boot in boot_results.items():
+        print(f"  {k_boot}:")
+        print(f"    Observed = ${v_boot['observed_diff']:+,.0f} | 95% CI = [${v_boot['ci_95_lower']:+,.0f}, ${v_boot['ci_95_upper']:+,.0f}] | P(>0) = {v_boot['prop_positive']*100:.1f}%")
+
+    # 8. Test Calibration Diagnostic
+    print("\n8. Test Calibration Diagnostic...")
     cal_test_df = pd.DataFrame({"y_true": y_te, "p_raw": p_a, "p_cal": p_cal})
     cal_test_df["bin"] = pd.qcut(cal_test_df["p_raw"], q=10, duplicates="drop")
     test_rel_table = cal_test_df.groupby("bin", observed=True).agg(
@@ -268,11 +339,11 @@ def main():
     raw_test_brier = float(brier_score_loss(y_te, p_a))
     cal_test_brier = float(brier_score_loss(y_te, p_cal))
 
-    # 8. Save updated results JSONs
+    # 9. Save updated results JSONs
     final_output = {
         "dataset_split": {
             "total_rows": n,
-            "train_rows": i2 - (int(0.15 * n)), # 413,378
+            "train_rows": i2 - (int(0.15 * n)),
             "val_rows": int(0.15 * n),
             "test_rows": n_te,
             "test_frauds": total_test_frauds,
@@ -280,7 +351,7 @@ def main():
             "test_total_fraud_loss_flag_nothing": total_test_fraud_amt
         },
         "day1_baseline_on_test": {
-            "description": "Baseline model trained with stable-sort pipeline on Day 1 features, evaluated on saved test array",
+            "description": "Baseline model trained with stable-sort pipeline on Day 1 features, evaluated on single saved test array (test_preds_day1_baseline.npy)",
             "test_pr_auc": base_pr_auc,
             "test_roc_auc": base_roc_auc,
             "threshold_0_5": {
@@ -321,6 +392,7 @@ def main():
         },
         "operating_points": operating_points_data,
         "amount_aware_rule_test": amt_aware_results,
+        "paired_bootstrap_1000": boot_results,
         "calibration_diagnostic_test": {
             "test_actual_fraud_rate": float(y_te.mean()),
             "test_raw_mean_prob": float(p_a.mean()),
@@ -334,14 +406,6 @@ def main():
     with open("results/step7_final_test_score.json", "w") as f:
         json.dump(final_output, f, indent=2)
     print("\nUpdated results/step7_final_test_score.json")
-
-    # Update day2_results.json
-    with open("results/day2_results.json", "r") as f:
-        d2 = json.load(f)
-    d2["step7_final_test_evaluation"] = final_output
-    with open("results/day2_results.json", "w") as f:
-        json.dump(d2, f, indent=2)
-    print("Updated results/day2_results.json")
 
 if __name__ == "__main__":
     main()

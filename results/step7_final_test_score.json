@@ -9,7 +9,7 @@
     "test_total_fraud_loss_flag_nothing": 469608.52099999995
   },
   "day1_baseline_on_test": {
-    "description": "Baseline model trained with stable-sort pipeline on Day 1 features, evaluated on saved test array",
+    "description": "Baseline model trained with stable-sort pipeline on Day 1 features, evaluated on single saved test array (test_preds_day1_baseline.npy)",
     "test_pr_auc": 0.4681483920473846,
     "test_roc_auc": 0.865648944850914,
     "threshold_0_5": {
@@ -216,6 +216,71 @@
       "total_cost": 265321.469,
       "savings_vs_fixed_alert_rate": 58311.11100000003,
       "savings_vs_nothing": 204287.05199999997
+    }
+  },
+  "paired_bootstrap_1000": {
+    "model_a_vs_baseline_97_per_1k_recovered_dollars": {
+      "observed_diff": 26590.588,
+      "boot_mean": 26782.503563000002,
+      "ci_95_lower": 12495.658849999998,
+      "ci_95_upper": 40566.243575,
+      "prop_positive": 1.0,
+      "n_boot": 1000,
+      "seed": 42
+    },
+    "model_a_vs_baseline_97_per_1k_cost_savings_at_10": {
+      "observed_diff": 26590.588,
+      "boot_mean": 26710.783563,
+      "ci_95_lower": 12442.509524999998,
+      "ci_95_upper": 40348.778625000006,
+      "prop_positive": 1.0,
+      "n_boot": 1000,
+      "seed": 42
+    },
+    "model_b_vs_model_a_97_per_1k_recovered_dollars": {
+      "observed_diff": -11768.425999999996,
+      "boot_mean": -11718.624958999999,
+      "ci_95_lower": -25439.052775,
+      "ci_95_upper": 1314.167424999994,
+      "prop_positive": 0.039,
+      "n_boot": 1000,
+      "seed": 42
+    },
+    "model_b_vs_model_a_97_per_1k_cost_savings_at_10": {
+      "observed_diff": -11768.426000000001,
+      "boot_mean": -11667.054959,
+      "ci_95_lower": -25384.425775000003,
+      "ci_95_upper": 1204.3085249999986,
+      "prop_positive": 0.039,
+      "n_boot": 1000,
+      "seed": 42
+    },
+    "amount_aware_vs_fixed_97_per_1k_savings_at_10": {
+      "observed_diff": 55682.393,
+      "boot_mean": 55345.452686000004,
+      "ci_95_lower": 37056.3971,
+      "ci_95_upper": 74024.574425,
+      "prop_positive": 1.0,
+      "n_boot": 1000,
+      "seed": 42
+    },
+    "amount_aware_vs_fixed_152_per_1k_savings_at_5": {
+      "observed_diff": 41303.955,
+      "boot_mean": 41015.340105999996,
+      "ci_95_lower": 26202.485624999998,
+      "ci_95_upper": 56952.901549999995,
+      "prop_positive": 1.0,
+      "n_boot": 1000,
+      "seed": 42
+    },
+    "amount_aware_vs_fixed_44_per_1k_savings_at_25": {
+      "observed_diff": 58311.111000000004,
+      "boot_mean": 58207.426339000005,
+      "ci_95_lower": 39713.939975,
+      "ci_95_upper": 77284.78199999999,
+      "prop_positive": 1.0,
+      "n_boot": 1000,
+      "seed": 42
     }
   },
   "calibration_diagnostic_test": {

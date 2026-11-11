@@ -6,9 +6,62 @@ import pandas as pd
 def main():
     print("Compiling complete Day 2 results into results/day2_results.json...")
 
+    # Dynamically compute dataset shape, splits, and category counts from raw data
+    print("Loading raw CSVs to compute dataset splits and category counts directly...")
+    train_trans = pd.read_csv("data/train_transaction.csv")
+    train_id = pd.read_csv("data/train_identity.csv")
+
+    trans_cols_set = set(train_trans.columns) - {"TransactionID", "isFraud", "TransactionDT"}
+    id_cols_set = set(train_id.columns) - {"TransactionID"}
+
+    df = pd.merge(train_trans, train_id, on="TransactionID", how="left")
+    del train_trans, train_id
+
+    df = df.sort_values("TransactionDT", kind="stable").reset_index(drop=True)
+    n = len(df)
+    i1, i2 = int(0.70 * n), int(0.85 * n)
+
+    X = df.drop(columns=["isFraud", "TransactionID", "TransactionDT"])
+    cat_cols = [c for c in X.columns if not pd.api.types.is_numeric_dtype(X[c])]
+    trans_cat_cols = [c for c in cat_cols if c in trans_cols_set]
+    id_cat_cols = [c for c in cat_cols if c in id_cols_set]
+
+    def get_split_stats(start, end):
+        sub = df.iloc[start:end]
+        dt_min = int(sub["TransactionDT"].min())
+        dt_max = int(sub["TransactionDT"].max())
+        return {
+            "rows": int(len(sub)),
+            "share": round(len(sub) / n, 4),
+            "fraud_count": int(sub["isFraud"].sum()),
+            "fraud_rate": float(sub["isFraud"].mean()),
+            "time_range": [dt_min, dt_max],
+            "duration_days": round((dt_max - dt_min) / 86400.0, 1)
+        }
+
+    dataset_summary = {
+        "total_rows": int(n),
+        "total_columns": int(df.shape[1]),
+        "features_used": int(X.shape[1]),
+        "splits": {
+            "train": get_split_stats(0, i1),
+            "validation": get_split_stats(i1, i2),
+            "test": get_split_stats(i2, n)
+        },
+        "categorical_columns_breakdown": {
+            "total_count": int(len(cat_cols)),
+            "transaction_count": int(len(trans_cat_cols)),
+            "identity_count": int(len(id_cat_cols)),
+            "transaction_columns": trans_cat_cols,
+            "identity_columns": id_cat_cols
+        }
+    }
+    print(f"Computed Splits: Train={dataset_summary['splits']['train']['rows']:,}, Val={dataset_summary['splits']['validation']['rows']:,}, Test={dataset_summary['splits']['test']['rows']:,}")
+    print(f"Computed Categories: {len(cat_cols)} total ({len(trans_cat_cols)} transaction, {len(id_cat_cols)} identity)")
+
+    del df, X
+
     # Load individual step json files
-    with open("results/day1_baseline.json", "r") as f:
-        d1 = json.load(f)
     with open("results/step3b_noise_and_d_ablation.json", "r") as f:
         s3b = json.load(f)
     with open("results/step3d_fixed_trees_comparison.json", "r") as f:
@@ -19,63 +72,14 @@ def main():
         s5 = json.load(f)
     with open("results/step6_cost_threshold.json", "r") as f:
         s6 = json.load(f)
-    
-    # Load step 7 if available
-    s7 = {}
-    if os.path.exists("results/step7_final_test_score.json"):
-        with open("results/step7_final_test_score.json", "r") as f:
-            s7 = json.load(f)
-
-    # Dataset splits and category breakdown
-    trans_cats = ["ProductCD", "card4", "card6", "P_emaildomain", "R_emaildomain"] + [f"M{i}" for i in range(1, 10)]
-    id_cats = [f"id_{i:02d}" for i in range(12, 39)] # 12 to 38
-    # Actual identity categories from day1
-    id_cats_actual = [c for c in d1.get("categorical_columns", []) if c.startswith("id_")]
-
-    dataset_summary = {
-        "total_rows": 590540,
-        "total_columns": 434,
-        "features_used": 431,
-        "splits": {
-            "train": {
-                "rows": 413378,
-                "share": 0.70,
-                "fraud_count": 14538,
-                "fraud_rate": 0.03516878014795175,
-                "time_range": [86400, 10437996],
-                "duration_days": 121
-            },
-            "validation": {
-                "rows": 88581,
-                "share": 0.15,
-                "fraud_count": 3042,
-                "fraud_rate": 0.034341450209412856,
-                "time_range": [10438003, 13151840],
-                "duration_days": 31
-            },
-            "test": {
-                "rows": 88581,
-                "share": 0.15,
-                "fraud_count": 3083,
-                "fraud_rate": 0.03480430339463316,
-                "time_range": [13151880, 15811131],
-                "duration_days": 31
-            }
-        },
-        "categorical_columns_breakdown": {
-            "total_count": len(d1.get("categorical_columns", [])),
-            "transaction_count": len([c for c in d1.get("categorical_columns", []) if not c.startswith("id_")]),
-            "identity_count": len([c for c in d1.get("categorical_columns", []) if c.startswith("id_")]),
-            "transaction_columns": [c for c in d1.get("categorical_columns", []) if not c.startswith("id_")],
-            "identity_columns": [c for c in d1.get("categorical_columns", []) if c.startswith("id_")]
-        }
-    }
+    with open("results/step7_final_test_score.json", "r") as f:
+        s7 = json.load(f)
 
     day2_compiled = {
         "metadata": {
             "project": "Fraud & Risk Investigator",
             "phase": "Day 2: Better features, imbalance, models and the alert threshold",
-            "date": "2026-11-10",
+            "date": "2026-11-11",
             "locked_configuration": {
                 "model": "XGBoost (350 fixed trees, unweighted, tree_method='hist')",
                 "feature_set": "Core Rolling Windows + D1_norm",

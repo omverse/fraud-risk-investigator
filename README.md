@@ -186,17 +186,24 @@ At each alert rate, recovered fraud dollars are verified to be strictly non-decr
 | | **Model A @ 44 / 1k (3,898 alerts)** | **40.71%** | **51.48%** | **\$243,426 (51.8%)** | **\$323,633** | **+\$145,976 saved (+$31,491 vs Base)** |
 | | **Model B (Retrained) @ 44 / 1k** | **45.54%** | **57.57%** | **\$221,105 (47.1%)** | **\$345,953** | **+\$123,655 saved** |
 
-### The Power of the Amount-Aware Rule on Test
-By prioritizing expected loss ($\mathbb{E}[\text{Loss}] = p_{\text{cal}} \times \text{TransactionAmt} \ge c_{\text{rev}}$), the amount-aware rule selectively flags high-value fraud over low-value flags:
+### Dollar Recovery Variance & Paired Bootstrap Intervals (1,000 Resamples)
+Because a small number of high-value transactions can disproportionately swing dollar totals, we paired-bootstrapped all test dollar and cost differences across 1,000 resamples of the 88,581 test rows:
+- **Model A vs. Day 1 Baseline @ 97 / 1k**: Model A recovers **+\$26,591** more fraud dollars (95% CI: **[+\$12,496, +\$40,566]**, $P(>0) = 100.0\%$; total cost savings at \$10: **+\$26,591**, 95% CI: **[+\$12,443, +\$40,349]**).
+- **Model B vs. Model A @ 97 / 1k**: Although Model B achieves higher PR-AUC (0.5482 vs 0.4756) and higher fraud count recall (70.09% vs 64.48%), it recovers **\$11,768 fewer fraud dollars** (\$304,952 vs \$316,720; 95% CI: **[-\$25,439, +\$1,314]**, crossing zero). PR-AUC weights every fraud event equally regardless of dollar value, whereas dollar totals are sensitive to transaction amounts; a higher ranking score on event counts does not automatically translate into more dollars saved in a single run.
 
-| Review Cost | Policy | Alerts / 1k | Precision | Recall | Recovered Fraud Dollars | Total Financial Cost | Additional Savings over Fixed Rate |
+### The Power of the Amount-Aware Rule on Test
+By prioritizing expected loss ($\mathbb{E}[\text{Loss}] = p_{\text{cal}} \times \text{TransactionAmt} \ge c_{\text{rev}}$), the amount-aware rule selectively flags high-value fraud over low-value flags—outperforming any model change at nearly identical alert volume:
+
+| Review Cost | Policy | Alerts / 1k | Precision | Recall | Recovered Fraud Dollars | Total Financial Cost | Additional Savings vs Fixed Rate (95% Bootstrap CI) |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **\$10 (Headline)** | **Fixed Alert Rate (97/1k)** | 97.0 / 1k | 23.14% | 64.48% | \$316,720 (67.4%) | \$238,808 | Working baseline |
-| | **Amount-Aware Rule** | **98.9 / 1k** | **19.47%** | **55.34%** | **\$374,103 (79.7%)** | **\$183,126** | **+\$55,682 additional savings** |
+| | **Amount-Aware Rule** | **98.9 / 1k** | **19.47%** | **55.34%** | **\$374,103 (79.7%)** | **\$183,126** | **+\$55,682 ([+\$37,056, +\$74,025])** |
 | **\$5** | **Fixed Alert Rate (152/1k)**| 152.0 / 1k | 16.47% | 71.91% | \$358,016 (76.2%) | \$178,912 | Working baseline |
-| | **Amount-Aware Rule** | **156.7 / 1k** | **14.41%** | **64.87%** | **\$401,395 (85.5%)** | **\$137,608** | **+\$41,304 additional savings** |
+| | **Amount-Aware Rule** | **156.7 / 1k** | **14.41%** | **64.87%** | **\$401,395 (85.5%)** | **\$137,608** | **+\$41,304 ([+\$26,202, +\$56,953])** |
 | **\$25** | **Fixed Alert Rate (44/1k)** | 44.0 / 1k | 40.71% | 51.48% | \$243,426 (51.8%) | \$323,633 | Working baseline |
-| | **Amount-Aware Rule** | **46.9 / 1k** | **26.77%** | **36.10%** | **\$308,237 (65.6%)** | **\$265,321** | **+\$58,311 additional savings** |
+| | **Amount-Aware Rule** | **46.9 / 1k** | **26.77%** | **36.10%** | **\$308,237 (65.6%)** | **\$265,321** | **+\$58,311 ([+\$39,714, +\$77,285])** |
+
+> **Strongest Finding**: The decision rule mattered more than the model choice here. With zero test tuning, switching from a fixed probability alert rate to the calibrated amount-aware expected-loss rule saves **\$41k–\$58k** with 95% confidence intervals bounded strictly well above zero ($P(>0) = 100.0\%$), exceeding any gain between model architectures or feature sets.
 
 ### Test Calibration Diagnostic (Decile Reliability)
 Evaluated on the full test set (actual fraud prevalence: 3.480%, raw mean prob: 2.643%, calibrated mean prob: 3.689%):
