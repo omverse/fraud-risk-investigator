@@ -1,0 +1,165 @@
+{
+  "transaction_id": 3452421,
+  "transaction_summary": {
+    "amount_usd": 27.67,
+    "raw_prob": 0.46568,
+    "raw_log_odds": -0.13751,
+    "calibrated_prob": 0.52655,
+    "calibrated_prob_display": "52.65%",
+    "calibration_note": null,
+    "expected_loss_usd": 14.57,
+    "amount_aware_review_flags": {
+      "at_5_usd_review_cost": true,
+      "at_10_usd_review_cost": true,
+      "at_25_usd_review_cost": false
+    },
+    "hour_of_day": {
+      "value": 17,
+      "day_of_week": 5,
+      "clock_label": "Dataset's own clock (TransactionDT elapsed seconds mod 86400 / 3600; not verified local wall-clock time)"
+    }
+  },
+  "top_5_individual_contributions": [
+    {
+      "rank": 1,
+      "display_name": "an anonymised feature",
+      "feature_code": "C14",
+      "is_masked": true,
+      "value": 0.0,
+      "direction": "increases_fraud_score",
+      "shap_contribution_log_odds": 1.55163
+    },
+    {
+      "rank": 2,
+      "display_name": "an anonymised feature",
+      "feature_code": "id_13",
+      "is_masked": true,
+      "value": 14.0,
+      "direction": "decreases_fraud_score",
+      "shap_contribution_log_odds": -0.92809
+    },
+    {
+      "rank": 3,
+      "display_name": "an anonymised feature",
+      "feature_code": "C1",
+      "is_masked": true,
+      "value": 4.0,
+      "direction": "increases_fraud_score",
+      "shap_contribution_log_odds": 0.57237
+    },
+    {
+      "rank": 4,
+      "display_name": "Card type (credit/debit)",
+      "feature_code": "card6",
+      "is_masked": false,
+      "value": "credit",
+      "direction": "increases_fraud_score",
+      "shap_contribution_log_odds": 0.4383
+    },
+    {
+      "rank": 5,
+      "display_name": "an anonymised feature",
+      "feature_code": "card3",
+      "is_masked": true,
+      "value": 185.0,
+      "direction": "increases_fraud_score",
+      "shap_contribution_log_odds": 0.43347
+    }
+  ],
+  "grouped_contributions": [
+    {
+      "group": "C_columns",
+      "description": "C columns (anonymised counting features)",
+      "feature_count": 14,
+      "total_shap_log_odds": 2.89099,
+      "direction": "increases_fraud_score"
+    },
+    {
+      "group": "V_columns",
+      "description": "V columns (Vesta-engineered anonymised features)",
+      "feature_count": 339,
+      "total_shap_log_odds": 1.0203,
+      "direction": "increases_fraud_score"
+    },
+    {
+      "group": "device_and_identity",
+      "description": "Device and identity fields (DeviceType/Info & id_01\u2013id_38)",
+      "feature_count": 40,
+      "total_shap_log_odds": -0.97317,
+      "direction": "decreases_fraud_score"
+    },
+    {
+      "group": "card_and_address",
+      "description": "Card and address fields (anonymised card/address IDs & plain card metadata)",
+      "feature_count": 8,
+      "total_shap_log_odds": 0.50036,
+      "direction": "increases_fraud_score"
+    },
+    {
+      "group": "transaction_context_and_distance",
+      "description": "Transaction context & distance (ProductCD, email domains, relative clock, anonymised dist1/dist2)",
+      "feature_count": 7,
+      "total_shap_log_odds": 0.39488,
+      "direction": "increases_fraud_score"
+    },
+    {
+      "group": "card_history",
+      "description": "Card-history features (rolling velocity & prior-avg ratio)",
+      "feature_count": 5,
+      "total_shap_log_odds": 0.31505,
+      "direction": "increases_fraud_score"
+    },
+    {
+      "group": "amount",
+      "description": "Amount (TransactionAmt)",
+      "feature_count": 1,
+      "total_shap_log_odds": -0.20575,
+      "direction": "decreases_fraud_score"
+    },
+    {
+      "group": "M_flags",
+      "description": "M flags (anonymised match flags)",
+      "feature_count": 9,
+      "total_shap_log_odds": 0.12621,
+      "direction": "increases_fraud_score"
+    },
+    {
+      "group": "D_columns",
+      "description": "D columns (anonymised time-delta features)",
+      "feature_count": 16,
+      "total_shap_log_odds": -0.02169,
+      "direction": "decreases_fraud_score"
+    }
+  ],
+  "groups_additivity_check": {
+    "base_value_log_odds": -4.18469,
+    "sum_of_group_shap": 4.047179,
+    "reconstructed_log_odds": -0.137511,
+    "model_raw_log_odds": -0.137511,
+    "abs_error": 7.598e-07,
+    "tolerance": 0.0001,
+    "passed": true
+  },
+  "data_cautions": [
+    {
+      "code": "D1_NORM_BELOW_TRAIN_MIN",
+      "severity": "warning",
+      "feature_code": "D1_norm",
+      "display_name": "an anonymised feature",
+      "observed_value": -138.7182,
+      "train_range": [
+        -120.8101,
+        632.3451
+      ],
+      "message": "Anonymised feature D1_norm (-138.72) sits below the training minimum (-120.81). Tree splits route all below-range rows down the leftmost branch regardless of magnitude. Because D1 == 0 on this row, D1_norm equals minus the transaction epoch day and cannot stay inside historical bounds."
+    }
+  ],
+  "disclaimer": "This explanation describes what drove the model's score, not why the fraud happened.",
+  "fixture_metadata": {
+    "fixture_id": 3,
+    "validation_outcome_bucket": "true_alert_TP",
+    "actual_fraud": 1,
+    "in_top_97_per_1k": true,
+    "selection_rule": "Uniform rank-quantile slice inside outcome bucket at top 97/1k operating point (seed=42 5,000-row validation sample)"
+  }
+}

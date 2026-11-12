@@ -1,0 +1,956 @@
+{
+  "metadata": {
+    "model": "day2_model_a_train_only.json",
+    "sample_size": 5000,
+    "random_seed": 42,
+    "shap_time_sec": 0.537,
+    "base_value_log_odds": -4.184690475463867,
+    "additivity_max_error": 1.239776611328125e-05,
+    "sample_confusion_at_97_per_1k": {
+      "alerts_in_sample": 486,
+      "TP": 133,
+      "FP": 353,
+      "FN": 48,
+      "TN": 4466
+    }
+  },
+  "top_20_shap_features": [
+    {
+      "rank": 1,
+      "feature": "TransactionAmt",
+      "mean_abs_shap": 0.39917948842048645,
+      "is_masked": false,
+      "description": "Transaction amount (USD)",
+      "single_feat_adv_auc_tr_va": 0.5608,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Moderate drift AUC"
+    },
+    {
+      "rank": 2,
+      "feature": "D1_norm",
+      "mean_abs_shap": 0.345542311668396,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.8315,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Epoch-normalized D1; High drift AUC"
+    },
+    {
+      "rank": 3,
+      "feature": "C13",
+      "mean_abs_shap": 0.34307384490966797,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5524,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Moderate drift AUC"
+    },
+    {
+      "rank": 4,
+      "feature": "C14",
+      "mean_abs_shap": 0.2650904953479767,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5332,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 5,
+      "feature": "P_emaildomain",
+      "mean_abs_shap": 0.2625814974308014,
+      "is_masked": false,
+      "description": "Purchaser email domain",
+      "single_feat_adv_auc_tr_va": 0.5123,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 6,
+      "feature": "V70",
+      "mean_abs_shap": 0.2207092046737671,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5435,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 7,
+      "feature": "card1",
+      "mean_abs_shap": 0.20338565111160278,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5204,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 8,
+      "feature": "card2",
+      "mean_abs_shap": 0.1992434859275818,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5411,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 9,
+      "feature": "card6",
+      "mean_abs_shap": 0.19274911284446716,
+      "is_masked": false,
+      "description": "Card type (credit/debit)",
+      "single_feat_adv_auc_tr_va": 0.5288,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 10,
+      "feature": "C1",
+      "mean_abs_shap": 0.18707434833049774,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5301,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 11,
+      "feature": "addr1",
+      "mean_abs_shap": 0.17918702960014343,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5181,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 12,
+      "feature": "C5",
+      "mean_abs_shap": 0.14891669154167175,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.533,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 13,
+      "feature": "D2",
+      "mean_abs_shap": 0.14835451543331146,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5632,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Growing D-col; Moderate drift AUC"
+    },
+    {
+      "rank": 14,
+      "feature": "D10",
+      "mean_abs_shap": 0.14492318034172058,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5849,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Growing D-col; Moderate drift AUC"
+    },
+    {
+      "rank": 15,
+      "feature": "C11",
+      "mean_abs_shap": 0.14347882568836212,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5264,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 16,
+      "feature": "D15",
+      "mean_abs_shap": 0.14118151366710663,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5806,
+      "in_day2_adv_top10": true,
+      "drift_notes": "Top-10 Adv Gain; Growing D-col; Moderate drift AUC"
+    },
+    {
+      "rank": 17,
+      "feature": "M4",
+      "mean_abs_shap": 0.13918443024158478,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5177,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 18,
+      "feature": "C2",
+      "mean_abs_shap": 0.13713963329792023,
+      "is_masked": true,
+      "description": "an anonymised feature",
+      "single_feat_adv_auc_tr_va": 0.5372,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 19,
+      "feature": "card1_trans_count_7d",
+      "mean_abs_shap": 0.13480889797210693,
+      "is_masked": false,
+      "description": "Card transaction count (past 7d)",
+      "single_feat_adv_auc_tr_va": 0.5484,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    },
+    {
+      "rank": 20,
+      "feature": "card1_amt_ratio_to_prev_avg",
+      "mean_abs_shap": 0.13285142183303833,
+      "is_masked": false,
+      "description": "Amount ratio vs card historical average",
+      "single_feat_adv_auc_tr_va": 0.5397,
+      "in_day2_adv_top10": false,
+      "drift_notes": "Low drift"
+    }
+  ],
+  "selected_15_cases": [
+    {
+      "category": "true_alert_TP",
+      "val_index": 651,
+      "sample_pos": 36,
+      "transaction_id": 3401029,
+      "actual_fraud": 1,
+      "in_top_97_per_1k": true,
+      "amount_usd": 84.83,
+      "raw_prob": 0.99999,
+      "calibrated_prob": 1.0,
+      "expected_loss_usd": 84.83,
+      "top_5_shap_contributions": [
+        {
+          "feature": "V258",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 9.0,
+          "shap_contribution": 3.72503
+        },
+        {
+          "feature": "C1",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 297.0,
+          "shap_contribution": 2.50211
+        },
+        {
+          "feature": "DeviceInfo",
+          "readable_name": "Device information",
+          "is_masked": false,
+          "value": "LG-D320 Build/KOT49I.V10a",
+          "shap_contribution": 1.72832
+        },
+        {
+          "feature": "C6",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 83.0,
+          "shap_contribution": 1.207
+        },
+        {
+          "feature": "C2",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 593.0,
+          "shap_contribution": -1.12729
+        }
+      ]
+    },
+    {
+      "category": "true_alert_TP",
+      "val_index": 16526,
+      "sample_pos": 943,
+      "transaction_id": 3416904,
+      "actual_fraud": 1,
+      "in_top_97_per_1k": true,
+      "amount_usd": 54.66,
+      "raw_prob": 0.98749,
+      "calibrated_prob": 0.85765,
+      "expected_loss_usd": 46.88,
+      "top_5_shap_contributions": [
+        {
+          "feature": "C14",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 0.0,
+          "shap_contribution": 2.01436
+        },
+        {
+          "feature": "C1",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 7.0,
+          "shap_contribution": 1.63801
+        },
+        {
+          "feature": "C10",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 4.0,
+          "shap_contribution": 1.06428
+        },
+        {
+          "feature": "card6",
+          "readable_name": "Card type (credit/debit)",
+          "is_masked": false,
+          "value": "credit",
+          "shap_contribution": 0.53546
+        },
+        {
+          "feature": "C13",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 0.0,
+          "shap_contribution": 0.48012
+        }
+      ]
+    },
+    {
+      "category": "true_alert_TP",
+      "val_index": 52043,
+      "sample_pos": 2957,
+      "transaction_id": 3452421,
+      "actual_fraud": 1,
+      "in_top_97_per_1k": true,
+      "amount_usd": 27.67,
+      "raw_prob": 0.46568,
+      "calibrated_prob": 0.52655,
+      "expected_loss_usd": 14.57,
+      "top_5_shap_contributions": [
+        {
+          "feature": "C14",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 0.0,
+          "shap_contribution": 1.55163
+        },
+        {
+          "feature": "id_13",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 14.0,
+          "shap_contribution": -0.92809
+        },
+        {
+          "feature": "C1",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 4.0,
+          "shap_contribution": 0.57237
+        },
+        {
+          "feature": "card6",
+          "readable_name": "Card type (credit/debit)",
+          "is_masked": false,
+          "value": "credit",
+          "shap_contribution": 0.4383
+        },
+        {
+          "feature": "card3",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 185.0,
+          "shap_contribution": 0.43347
+        }
+      ]
+    },
+    {
+      "category": "true_alert_TP",
+      "val_index": 58625,
+      "sample_pos": 3295,
+      "transaction_id": 3459003,
+      "actual_fraud": 1,
+      "in_top_97_per_1k": true,
+      "amount_usd": 280.0,
+      "raw_prob": 0.14415,
+      "calibrated_prob": 0.2203,
+      "expected_loss_usd": 61.68,
+      "top_5_shap_contributions": [
+        {
+          "feature": "TransactionAmt",
+          "readable_name": "Transaction amount (USD)",
+          "is_masked": false,
+          "value": 280.0,
+          "shap_contribution": 1.42544
+        },
+        {
+          "feature": "D1_norm",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": -140.9997,
+          "shap_contribution": 0.56983
+        },
+        {
+          "feature": "card6",
+          "readable_name": "Card type (credit/debit)",
+          "is_masked": false,
+          "value": "credit",
+          "shap_contribution": 0.43143
+        },
+        {
+          "feature": "V131",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 554.0,
+          "shap_contribution": 0.38105
+        },
+        {
+          "feature": "P_emaildomain",
+          "readable_name": "Purchaser email domain",
+          "is_masked": false,
+          "value": "gmail.com",
+          "shap_contribution": 0.2433
+        }
+      ]
+    },
+    {
+      "category": "true_alert_TP",
+      "val_index": 46608,
+      "sample_pos": 2665,
+      "transaction_id": 3446986,
+      "actual_fraud": 1,
+      "in_top_97_per_1k": true,
+      "amount_usd": 34.0,
+      "raw_prob": 0.02525,
+      "calibrated_prob": 0.05322,
+      "expected_loss_usd": 1.81,
+      "top_5_shap_contributions": [
+        {
+          "feature": "card1",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 10023,
+          "shap_contribution": 0.8652
+        },
+        {
+          "feature": "D1_norm",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 374.236,
+          "shap_contribution": 0.69184
+        },
+        {
+          "feature": "D15",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 511.0,
+          "shap_contribution": -0.63731
+        },
+        {
+          "feature": "dist1",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 32.0,
+          "shap_contribution": 0.38109
+        },
+        {
+          "feature": "D1",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 511.0,
+          "shap_contribution": 0.26194
+        }
+      ]
+    },
+    {
+      "category": "false_alert_FP",
+      "val_index": 41773,
+      "sample_pos": 2374,
+      "transaction_id": 3442151,
+      "actual_fraud": 0,
+      "in_top_97_per_1k": true,
+      "amount_usd": 82.69,
+      "raw_prob": 0.98968,
+      "calibrated_prob": 0.85765,
+      "expected_loss_usd": 70.92,
+      "top_5_shap_contributions": [
+        {
+          "feature": "R_emaildomain",
+          "readable_name": "Recipient email domain",
+          "is_masked": false,
+          "value": "mail.com",
+          "shap_contribution": 2.37145
+        },
+        {
+          "feature": "C14",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 0.0,
+          "shap_contribution": 1.35033
+        },
+        {
+          "feature": "id_03",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 3.0,
+          "shap_contribution": 0.64956
+        },
+        {
+          "feature": "card6",
+          "readable_name": "Card type (credit/debit)",
+          "is_masked": false,
+          "value": "credit",
+          "shap_contribution": 0.39602
+        },
+        {
+          "feature": "id_02",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 106052.0,
+          "shap_contribution": 0.35263
+        }
+      ]
+    },
+    {
+      "category": "false_alert_FP",
+      "val_index": 2725,
+      "sample_pos": 136,
+      "transaction_id": 3403103,
+      "actual_fraud": 0,
+      "in_top_97_per_1k": true,
+      "amount_usd": 117.0,
+      "raw_prob": 0.11583,
+      "calibrated_prob": 0.16199,
+      "expected_loss_usd": 18.95,
+      "top_5_shap_contributions": [
+        {
+          "feature": "D1_norm",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": -52.7109,
+          "shap_contribution": 0.48751
+        },
+        {
+          "feature": "D2",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 69.0,
+          "shap_contribution": 0.39006
+        },
+        {
+          "feature": "V317",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 117.0,
+          "shap_contribution": 0.35312
+        },
+        {
+          "feature": "card5",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 226.0,
+          "shap_contribution": 0.30355
+        },
+        {
+          "feature": "V96",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 3.0,
+          "shap_contribution": -0.26066
+        }
+      ]
+    },
+    {
+      "category": "false_alert_FP",
+      "val_index": 17296,
+      "sample_pos": 992,
+      "transaction_id": 3417674,
+      "actual_fraud": 0,
+      "in_top_97_per_1k": true,
+      "amount_usd": 160.5,
+      "raw_prob": 0.05613,
+      "calibrated_prob": 0.10093,
+      "expected_loss_usd": 16.2,
+      "top_5_shap_contributions": [
+        {
+          "feature": "addr1",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 441.0,
+          "shap_contribution": 0.47477
+        },
+        {
+          "feature": "TransactionAmt",
+          "readable_name": "Transaction amount (USD)",
+          "is_masked": false,
+          "value": 160.5,
+          "shap_contribution": 0.46313
+        },
+        {
+          "feature": "V61",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 2.0,
+          "shap_contribution": 0.41477
+        },
+        {
+          "feature": "C13",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 1.0,
+          "shap_contribution": 0.26063
+        },
+        {
+          "feature": "V83",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 2.0,
+          "shap_contribution": 0.24492
+        }
+      ]
+    },
+    {
+      "category": "false_alert_FP",
+      "val_index": 76061,
+      "sample_pos": 4281,
+      "transaction_id": 3476439,
+      "actual_fraud": 0,
+      "in_top_97_per_1k": true,
+      "amount_usd": 55.87,
+      "raw_prob": 0.03682,
+      "calibrated_prob": 0.08657,
+      "expected_loss_usd": 4.84,
+      "top_5_shap_contributions": [
+        {
+          "feature": "TransactionAmt",
+          "readable_name": "Transaction amount (USD)",
+          "is_masked": false,
+          "value": 55.867,
+          "shap_contribution": -0.46226
+        },
+        {
+          "feature": "id_11",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 96.72,
+          "shap_contribution": 0.45278
+        },
+        {
+          "feature": "card6",
+          "readable_name": "Card type (credit/debit)",
+          "is_masked": false,
+          "value": "credit",
+          "shap_contribution": 0.42722
+        },
+        {
+          "feature": "R_emaildomain",
+          "readable_name": "Recipient email domain",
+          "is_masked": false,
+          "value": "gmail.com",
+          "shap_contribution": 0.40284
+        },
+        {
+          "feature": "card2",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 100.0,
+          "shap_contribution": -0.2403
+        }
+      ]
+    },
+    {
+      "category": "false_alert_FP",
+      "val_index": 33048,
+      "sample_pos": 1856,
+      "transaction_id": 3433426,
+      "actual_fraud": 0,
+      "in_top_97_per_1k": true,
+      "amount_usd": 1879.95,
+      "raw_prob": 0.02578,
+      "calibrated_prob": 0.05322,
+      "expected_loss_usd": 100.05,
+      "top_5_shap_contributions": [
+        {
+          "feature": "TransactionAmt",
+          "readable_name": "Transaction amount (USD)",
+          "is_masked": false,
+          "value": 1879.95,
+          "shap_contribution": 0.82187
+        },
+        {
+          "feature": "D1_norm",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": -131.6511,
+          "shap_contribution": 0.40332
+        },
+        {
+          "feature": "M4",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": "MISSING",
+          "shap_contribution": -0.34259
+        },
+        {
+          "feature": "M6",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": "F",
+          "shap_contribution": 0.25942
+        },
+        {
+          "feature": "card6",
+          "readable_name": "Card type (credit/debit)",
+          "is_masked": false,
+          "value": "debit",
+          "shap_contribution": -0.22783
+        }
+      ]
+    },
+    {
+      "category": "missed_fraud_FN",
+      "val_index": 392,
+      "sample_pos": 16,
+      "transaction_id": 3400770,
+      "actual_fraud": 1,
+      "in_top_97_per_1k": false,
+      "amount_usd": 49.0,
+      "raw_prob": 0.02484,
+      "calibrated_prob": 0.05322,
+      "expected_loss_usd": 2.61,
+      "top_5_shap_contributions": [
+        {
+          "feature": "C14",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 3.0,
+          "shap_contribution": -0.36219
+        },
+        {
+          "feature": "addr1",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 204.0,
+          "shap_contribution": 0.34693
+        },
+        {
+          "feature": "TransactionAmt",
+          "readable_name": "Transaction amount (USD)",
+          "is_masked": false,
+          "value": 49.0,
+          "shap_contribution": -0.25575
+        },
+        {
+          "feature": "card1_trans_count_24h",
+          "readable_name": "Card transaction count (past 24h)",
+          "is_masked": false,
+          "value": 13,
+          "shap_contribution": 0.25418
+        },
+        {
+          "feature": "dist1",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 4.0,
+          "shap_contribution": 0.22946
+        }
+      ]
+    },
+    {
+      "category": "missed_fraud_FN",
+      "val_index": 62272,
+      "sample_pos": 3476,
+      "transaction_id": 3462650,
+      "actual_fraud": 1,
+      "in_top_97_per_1k": false,
+      "amount_usd": 59.0,
+      "raw_prob": 0.01266,
+      "calibrated_prob": 0.03518,
+      "expected_loss_usd": 2.08,
+      "top_5_shap_contributions": [
+        {
+          "feature": "C14",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 0.0,
+          "shap_contribution": 1.0139
+        },
+        {
+          "feature": "hour_of_day",
+          "readable_name": "Hour of day",
+          "is_masked": false,
+          "value": 8,
+          "shap_contribution": 0.47921
+        },
+        {
+          "feature": "D1_norm",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": -142.3416,
+          "shap_contribution": -0.47425
+        },
+        {
+          "feature": "TransactionAmt",
+          "readable_name": "Transaction amount (USD)",
+          "is_masked": false,
+          "value": 59.0,
+          "shap_contribution": -0.36659
+        },
+        {
+          "feature": "card1_trans_count_7d",
+          "readable_name": "Card transaction count (past 7d)",
+          "is_masked": false,
+          "value": 459,
+          "shap_contribution": 0.24756
+        }
+      ]
+    },
+    {
+      "category": "missed_fraud_FN",
+      "val_index": 40110,
+      "sample_pos": 2273,
+      "transaction_id": 3440488,
+      "actual_fraud": 1,
+      "in_top_97_per_1k": false,
+      "amount_usd": 226.0,
+      "raw_prob": 0.00764,
+      "calibrated_prob": 0.01913,
+      "expected_loss_usd": 4.32,
+      "top_5_shap_contributions": [
+        {
+          "feature": "TransactionAmt",
+          "readable_name": "Transaction amount (USD)",
+          "is_masked": false,
+          "value": 226.0,
+          "shap_contribution": 0.58789
+        },
+        {
+          "feature": "D1_norm",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": -134.0284,
+          "shap_contribution": -0.25158
+        },
+        {
+          "feature": "C11",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 1.0,
+          "shap_contribution": -0.22437
+        },
+        {
+          "feature": "card6",
+          "readable_name": "Card type (credit/debit)",
+          "is_masked": false,
+          "value": "debit",
+          "shap_contribution": -0.21795
+        },
+        {
+          "feature": "C13",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 1.0,
+          "shap_contribution": 0.21178
+        }
+      ]
+    },
+    {
+      "category": "missed_fraud_FN",
+      "val_index": 71959,
+      "sample_pos": 4048,
+      "transaction_id": 3472337,
+      "actual_fraud": 1,
+      "in_top_97_per_1k": false,
+      "amount_usd": 107.95,
+      "raw_prob": 0.00271,
+      "calibrated_prob": 0.00862,
+      "expected_loss_usd": 0.93,
+      "top_5_shap_contributions": [
+        {
+          "feature": "card5",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 166.0,
+          "shap_contribution": -0.64507
+        },
+        {
+          "feature": "addr1",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 184.0,
+          "shap_contribution": 0.56712
+        },
+        {
+          "feature": "V313",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 57.95,
+          "shap_contribution": 0.48656
+        },
+        {
+          "feature": "V70",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 1.0,
+          "shap_contribution": -0.47755
+        },
+        {
+          "feature": "V7",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 2.0,
+          "shap_contribution": 0.46928
+        }
+      ]
+    },
+    {
+      "category": "missed_fraud_FN",
+      "val_index": 65226,
+      "sample_pos": 3675,
+      "transaction_id": 3465604,
+      "actual_fraud": 1,
+      "in_top_97_per_1k": false,
+      "amount_usd": 25.0,
+      "raw_prob": 2e-05,
+      "calibrated_prob": 0.00234,
+      "expected_loss_usd": 0.06,
+      "top_5_shap_contributions": [
+        {
+          "feature": "DeviceInfo",
+          "readable_name": "Device information",
+          "is_masked": false,
+          "value": "Trident/7.0",
+          "shap_contribution": -1.57816
+        },
+        {
+          "feature": "id_33",
+          "readable_name": "Screen resolution",
+          "is_masked": false,
+          "value": "1600x900",
+          "shap_contribution": -1.08888
+        },
+        {
+          "feature": "D1_norm",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 3.2314,
+          "shap_contribution": -1.02689
+        },
+        {
+          "feature": "TransactionAmt",
+          "readable_name": "Transaction amount (USD)",
+          "is_masked": false,
+          "value": 25.0,
+          "shap_contribution": -0.89286
+        },
+        {
+          "feature": "card1",
+          "readable_name": "an anonymised feature",
+          "is_masked": true,
+          "value": 18227,
+          "shap_contribution": -0.54406
+        }
+      ]
+    }
+  ]
+}

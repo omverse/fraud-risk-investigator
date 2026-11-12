@@ -1,0 +1,447 @@
+{
+  "metadata": {
+    "purpose": "Diagnosis only on train vs validation (locked Model A unchanged, test set untouched)",
+    "train_rows": 413378,
+    "val_rows": 88581
+  },
+  "d1_regime_shares_and_fraud_rates": {
+    "train": {
+      "D1 == 0": {
+        "count": 207089,
+        "share": 0.50097,
+        "frauds": 8484,
+        "fraud_rate": 0.04097
+      },
+      "D1 > 0": {
+        "count": 206016,
+        "share": 0.49837,
+        "frauds": 6053,
+        "fraud_rate": 0.02938
+      },
+      "D1 < 0": {
+        "count": 0,
+        "share": 0.0,
+        "frauds": 0,
+        "fraud_rate": 0.0
+      },
+      "D1 is NaN": {
+        "count": 273,
+        "share": 0.00066,
+        "frauds": 1,
+        "fraud_rate": 0.00366
+      }
+    },
+    "validation": {
+      "D1 == 0": {
+        "count": 36273,
+        "share": 0.40949,
+        "frauds": 1564,
+        "fraud_rate": 0.04312
+      },
+      "D1 > 0": {
+        "count": 51353,
+        "share": 0.57973,
+        "frauds": 1439,
+        "fraud_rate": 0.02802
+      },
+      "D1 < 0": {
+        "count": 0,
+        "share": 0.0,
+        "frauds": 0,
+        "fraud_rate": 0.0
+      },
+      "D1 is NaN": {
+        "count": 955,
+        "share": 0.01078,
+        "frauds": 39,
+        "fraud_rate": 0.04084
+      }
+    }
+  },
+  "d1_norm_ranges_vs_train": {
+    "train_epoch_day_range": [
+      1.0,
+      120.8101
+    ],
+    "val_epoch_day_range": [
+      120.8102,
+      152.2204
+    ],
+    "train_d1_norm_overall": {
+      "count_valid": 413105,
+      "min": -120.8101,
+      "p01": -118.1046,
+      "p05": -107.5506,
+      "median": -21.9314,
+      "mean": 30.8662,
+      "p95": 422.224,
+      "p99": 479.9263,
+      "max": 632.3451
+    },
+    "train_d1_norm_D1_eq_0": {
+      "count_valid": 207089,
+      "min": -120.8101,
+      "p01": -119.6291,
+      "p05": -113.7793,
+      "median": -48.6788,
+      "mean": -53.9649,
+      "p95": -6.6881,
+      "p99": -1.9593,
+      "max": -1.0
+    },
+    "train_d1_norm_D1_gt_0": {
+      "count_valid": 206016,
+      "min": -119.7705,
+      "p01": -106.0255,
+      "p05": -86.0181,
+      "median": 54.3963,
+      "mean": 116.1391,
+      "p95": 469.918,
+      "p99": 482.3305,
+      "max": 632.3451
+    },
+    "val_d1_norm_overall": {
+      "count_valid": 87626,
+      "min": -152.2204,
+      "p01": -151.7047,
+      "p05": -148.6416,
+      "median": -118.1022,
+      "mean": -25.0977,
+      "p95": 421.1038,
+      "p99": 479.4677,
+      "max": 516.0745
+    },
+    "val_d1_norm_D1_eq_0": {
+      "count_valid": 36273,
+      "min": -152.2204,
+      "p01": -151.9562,
+      "p05": -150.8097,
+      "median": -135.7515,
+      "mean": -135.9682,
+      "p95": -121.9776,
+      "p99": -120.9468,
+      "max": -120.8102
+    },
+    "val_d1_norm_D1_gt_0": {
+      "count_valid": 51353,
+      "min": -151.1746,
+      "p01": -146.0163,
+      "p05": -134.2721,
+      "median": -20.7808,
+      "mean": 53.2153,
+      "p95": 463.3571,
+      "p99": 481.4887,
+      "max": 516.0745
+    }
+  },
+  "out_of_range_and_clock_correlations": {
+    "train_global_min_d1_norm": -120.8101,
+    "train_global_max_d1_norm": 632.3451,
+    "val_all_below_train_min_count": 42838,
+    "val_all_below_train_min_share": 0.48887,
+    "val_D1_eq_0_below_train_min_count": 36273,
+    "val_D1_eq_0_below_train_min_share": 1.0,
+    "val_D1_gt_0_below_train_min_count": 6565,
+    "val_D1_gt_0_below_train_min_share": 0.12784,
+    "val_D1_gt_0_above_train_max_count": 0,
+    "val_D1_gt_0_above_train_max_share": 0.0,
+    "corr_d1_norm_vs_epoch_tr_D1_eq_0": -1.0,
+    "corr_d1_norm_vs_epoch_va_D1_eq_0": -1.0,
+    "corr_d1_norm_vs_epoch_tr_D1_gt_0": -0.19353,
+    "corr_d1_norm_vs_epoch_va_D1_gt_0": -0.04637
+  },
+  "model_a_validation_slices": {
+    "overall_val": {
+      "label": "Overall Validation",
+      "n": 88581,
+      "frauds": 3042,
+      "fraud_rate": 0.03434,
+      "pr_auc": 0.57063,
+      "pr_lift_vs_prevalence": 16.62,
+      "roc_auc": 0.90543,
+      "mean_raw_prob": 0.02466
+    },
+    "D1_eq_0": {
+      "label": "Val D1 == 0",
+      "n": 36273,
+      "frauds": 1564,
+      "fraud_rate": 0.04312,
+      "pr_auc": 0.58523,
+      "pr_lift_vs_prevalence": 13.57,
+      "roc_auc": 0.88298,
+      "mean_raw_prob": 0.03316
+    },
+    "D1_gt_0": {
+      "label": "Val D1 > 0",
+      "n": 51353,
+      "frauds": 1439,
+      "fraud_rate": 0.02802,
+      "pr_auc": 0.56862,
+      "pr_lift_vs_prevalence": 20.29,
+      "roc_auc": 0.93084,
+      "mean_raw_prob": 0.01903
+    },
+    "D1_is_nan": {
+      "label": "Val D1 is NaN",
+      "n": 955,
+      "frauds": 39,
+      "fraud_rate": 0.04084,
+      "pr_auc": 0.1174,
+      "pr_lift_vs_prevalence": 2.87,
+      "roc_auc": 0.65077,
+      "mean_raw_prob": 0.00461
+    },
+    "D1_norm_below_train_min": {
+      "label": "Val D1_norm < Train min",
+      "n": 42838,
+      "frauds": 2026,
+      "fraud_rate": 0.04729,
+      "pr_auc": 0.55963,
+      "pr_lift_vs_prevalence": 11.83,
+      "roc_auc": 0.87799,
+      "mean_raw_prob": 0.03526
+    },
+    "D1_norm_inside_train_range": {
+      "label": "Val D1_norm >= Train min",
+      "n": 44788,
+      "frauds": 977,
+      "fraud_rate": 0.02181,
+      "pr_auc": 0.62361,
+      "pr_lift_vs_prevalence": 28.59,
+      "roc_auc": 0.9448,
+      "mean_raw_prob": 0.01496
+    }
+  },
+  "core_only_vs_model_a_unshuffled_single_run": {
+    "overall_val": {
+      "core_only_pr_auc": 0.56881,
+      "model_a_pr_auc": 0.57063,
+      "delta_pr_auc": 0.00182,
+      "core_only_roc_auc": 0.89871,
+      "model_a_roc_auc": 0.90543,
+      "delta_roc_auc": 0.00672
+    },
+    "D1_eq_0": {
+      "core_only_pr_auc": 0.60211,
+      "model_a_pr_auc": 0.58523,
+      "delta_pr_auc": -0.01688,
+      "core_only_roc_auc": 0.88301,
+      "model_a_roc_auc": 0.88298,
+      "delta_roc_auc": -3e-05
+    },
+    "D1_gt_0": {
+      "core_only_pr_auc": 0.55134,
+      "model_a_pr_auc": 0.56862,
+      "delta_pr_auc": 0.01728,
+      "core_only_roc_auc": 0.91868,
+      "model_a_roc_auc": 0.93084,
+      "delta_roc_auc": 0.01216
+    },
+    "D1_is_nan": {
+      "core_only_pr_auc": 0.12951,
+      "model_a_pr_auc": 0.1174,
+      "delta_pr_auc": -0.01211,
+      "core_only_roc_auc": 0.63506,
+      "model_a_roc_auc": 0.65077,
+      "delta_roc_auc": 0.01571
+    }
+  },
+  "core_vs_core_d1norm_3_shuffled_runs_by_slice": {
+    "overall_val": {
+      "core_pr_auc_runs": [
+        0.56955,
+        0.56546,
+        0.56155
+      ],
+      "core_pr_auc_mean": 0.56552,
+      "core_pr_auc_std_n1": 0.004,
+      "core_d1norm_pr_auc_runs": [
+        0.58136,
+        0.58101,
+        0.58019
+      ],
+      "core_d1norm_pr_auc_mean": 0.58085,
+      "core_d1norm_pr_auc_std_n1": 0.0006,
+      "paired_delta_pr_auc_runs": [
+        0.01181,
+        0.01555,
+        0.01864
+      ],
+      "delta_pr_auc_mean": 0.01533,
+      "delta_pr_auc_std_n1": 0.00342,
+      "core_roc_auc_mean": 0.9024,
+      "core_d1norm_roc_auc_mean": 0.90774,
+      "delta_roc_auc_mean": 0.00534
+    },
+    "D1_eq_0": {
+      "core_pr_auc_runs": [
+        0.59779,
+        0.59001,
+        0.59735
+      ],
+      "core_pr_auc_mean": 0.59505,
+      "core_pr_auc_std_n1": 0.00437,
+      "core_d1norm_pr_auc_runs": [
+        0.58989,
+        0.58644,
+        0.58428
+      ],
+      "core_d1norm_pr_auc_mean": 0.58687,
+      "core_d1norm_pr_auc_std_n1": 0.00283,
+      "paired_delta_pr_auc_runs": [
+        -0.0079,
+        -0.00357,
+        -0.01307
+      ],
+      "delta_pr_auc_mean": -0.00818,
+      "delta_pr_auc_std_n1": 0.00476,
+      "core_roc_auc_mean": 0.88278,
+      "core_d1norm_roc_auc_mean": 0.88401,
+      "delta_roc_auc_mean": 0.00123
+    },
+    "D1_gt_0": {
+      "core_pr_auc_runs": [
+        0.55776,
+        0.55907,
+        0.53735
+      ],
+      "core_pr_auc_mean": 0.55139,
+      "core_pr_auc_std_n1": 0.01218,
+      "core_d1norm_pr_auc_runs": [
+        0.58629,
+        0.5904,
+        0.59245
+      ],
+      "core_d1norm_pr_auc_mean": 0.58971,
+      "core_d1norm_pr_auc_std_n1": 0.00314,
+      "paired_delta_pr_auc_runs": [
+        0.02853,
+        0.03133,
+        0.0551
+      ],
+      "delta_pr_auc_mean": 0.03832,
+      "delta_pr_auc_std_n1": 0.0146,
+      "core_roc_auc_mean": 0.92718,
+      "core_d1norm_roc_auc_mean": 0.93522,
+      "delta_roc_auc_mean": 0.00804
+    },
+    "D1_norm_below_train_min": {
+      "core_pr_auc_runs": [
+        0.57245,
+        0.56866,
+        0.56875
+      ],
+      "core_pr_auc_mean": 0.56995,
+      "core_pr_auc_std_n1": 0.00216,
+      "core_d1norm_pr_auc_runs": [
+        0.56302,
+        0.55997,
+        0.56524
+      ],
+      "core_d1norm_pr_auc_mean": 0.56274,
+      "core_d1norm_pr_auc_std_n1": 0.00265,
+      "paired_delta_pr_auc_runs": [
+        -0.00943,
+        -0.00869,
+        -0.00351
+      ],
+      "delta_pr_auc_mean": -0.00721,
+      "delta_pr_auc_std_n1": 0.00323,
+      "core_roc_auc_mean": 0.87513,
+      "core_d1norm_roc_auc_mean": 0.87756,
+      "delta_roc_auc_mean": 0.00243
+    },
+    "D1_norm_inside_train_range": {
+      "core_pr_auc_runs": [
+        0.60181,
+        0.5975,
+        0.57767
+      ],
+      "core_pr_auc_mean": 0.59233,
+      "core_pr_auc_std_n1": 0.01287,
+      "core_d1norm_pr_auc_runs": [
+        0.64938,
+        0.65649,
+        0.64325
+      ],
+      "core_d1norm_pr_auc_mean": 0.64971,
+      "core_d1norm_pr_auc_std_n1": 0.00663,
+      "paired_delta_pr_auc_runs": [
+        0.04756,
+        0.059,
+        0.06558
+      ],
+      "delta_pr_auc_mean": 0.05738,
+      "delta_pr_auc_std_n1": 0.00912,
+      "core_roc_auc_mean": 0.93842,
+      "core_d1norm_roc_auc_mean": 0.95293,
+      "delta_roc_auc_mean": 0.01451
+    },
+    "D1_is_nan": {
+      "core_pr_auc_runs": [
+        0.11191,
+        0.0842,
+        0.14524
+      ],
+      "core_pr_auc_mean": 0.11378,
+      "core_pr_auc_std_n1": 0.03056,
+      "core_d1norm_pr_auc_runs": [
+        0.17438,
+        0.09249,
+        0.11671
+      ],
+      "core_d1norm_pr_auc_mean": 0.12786,
+      "core_d1norm_pr_auc_std_n1": 0.04207,
+      "paired_delta_pr_auc_runs": [
+        0.06247,
+        0.0083,
+        -0.02853
+      ],
+      "delta_pr_auc_mean": 0.01408,
+      "delta_pr_auc_std_n1": 0.04577,
+      "core_roc_auc_mean": 0.59962,
+      "core_d1norm_roc_auc_mean": 0.61385,
+      "delta_roc_auc_mean": 0.01423
+    }
+  },
+  "shap_val5000_d1_norm_breakdown": {
+    "sample_all": {
+      "n": 5000,
+      "mean_abs_shap_d1_norm": 0.34554,
+      "mean_signed_shap_d1_norm": -0.11998,
+      "pct_positive_shap": 0.3692
+    },
+    "sample_D1_eq_0": {
+      "n": 2013,
+      "mean_abs_shap_d1_norm": 0.25377,
+      "mean_signed_shap_d1_norm": -0.06191,
+      "pct_positive_shap": 0.3656
+    },
+    "sample_D1_gt_0": {
+      "n": 2939,
+      "mean_abs_shap_d1_norm": 0.38326,
+      "mean_signed_shap_d1_norm": -0.13093,
+      "pct_positive_shap": 0.3777
+    },
+    "sample_D1_is_nan": {
+      "n": 48,
+      "mean_abs_shap_d1_norm": 1.88487,
+      "mean_signed_shap_d1_norm": -1.88487,
+      "pct_positive_shap": 0.0
+    },
+    "sample_D1_norm_below_train_min": {
+      "n": 2404,
+      "mean_abs_shap_d1_norm": 0.257,
+      "mean_signed_shap_d1_norm": -0.05715,
+      "pct_positive_shap": 0.3723,
+      "std_signed_shap": 0.31518,
+      "unique_shap_values_5dp": 2373
+    },
+    "sample_D1_norm_inside_train_range": {
+      "n": 2548,
+      "mean_abs_shap_d1_norm": 0.40008,
+      "mean_signed_shap_d1_norm": -0.14601,
+      "pct_positive_shap": 0.3732
+    }
+  }
+}

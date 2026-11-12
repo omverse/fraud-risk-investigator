@@ -187,7 +187,7 @@ At each alert rate, recovered fraud dollars are verified to be strictly non-decr
 | | **Model B (Retrained) @ 44 / 1k** | **45.54%** | **57.57%** | **\$221,105 (47.1%)** | **\$345,953** | **+\$123,655 saved** |
 
 ### Dollar Recovery Variance & Paired Bootstrap Intervals (1,000 Resamples)
-Because a small number of high-value transactions can disproportionately swing dollar totals, we paired-bootstrapped all test dollar and cost differences across 1,000 resamples of the 88,581 test rows:
+Because a small number of high-value transactions can disproportionately swing dollar totals, we paired-bootstrapped all test dollar and cost differences across 1,000 resamples of the 88,581 test rows. *Note: these intervals capture test-set row sampling variability only; they do not include run-to-run training noise, and each compared model represents a single training run.*
 - **Model A vs. Day 1 Baseline @ 97 / 1k**: Model A recovers **+\$26,591** more fraud dollars (95% CI: **[+\$12,496, +\$40,566]**, $P(>0) = 100.0\%$; total cost savings at \$10: **+\$26,591**, 95% CI: **[+\$12,443, +\$40,349]**).
 - **Model B vs. Model A @ 97 / 1k**: Although Model B achieves higher PR-AUC (0.5482 vs 0.4756) and higher fraud count recall (70.09% vs 64.48%), it recovers **\$11,768 fewer fraud dollars** (\$304,952 vs \$316,720; 95% CI: **[-\$25,439, +\$1,314]**, crossing zero). PR-AUC weights every fraud event equally regardless of dollar value, whereas dollar totals are sensitive to transaction amounts; a higher ranking score on event counts does not automatically translate into more dollars saved in a single run.
 
@@ -210,3 +210,40 @@ Evaluated on the full test set (actual fraud prevalence: 3.480%, raw mean prob: 
 - In deciles 1 through 7, calibrated probabilities are slightly lower than actual rates (e.g., decile 1 calibrated is 0.23% vs 0.60% actual).
 - In deciles 8 through 10, calibrated probabilities slightly overestimate actual rates (top decile calibrated is 26.4% vs 22.6% actual).
 - The top decile concentrates 2,005 out of 3,083 total frauds, directly aligning with the 64.5% recall achieved at the 97-per-1,000 alert rate.
+
+---
+
+## 11. `D1_norm` Diagnostic Finding & Future Work
+SHAP explainability on locked Model A (Day 3 Step 1) ranked `D1_norm` #2 globally (`mean |SHAP| = 0.34554`) despite showing high Train-vs-Validation adversarial separability (`ROC-AUC = 0.8315`). A validation-only diagnostic (`src/day3_d1_diagnostic.py`, locked models and test set unchanged) **supported** the mechanism of two distinct regimes in masked column `D1`:
+
+- **Rows Where `D1` Is Zero (`D1 == 0`)**: Account for **50.10%** of Train (`207,089 / 413,378`, `4.10%` fraud) and **40.95%** of Validation (`36,273 / 88,581`, `4.31%` fraud). By arithmetic, when `D1 = 0`, `D1_norm = -TransactionDT / 86400.0` equals minus the transaction's day number (`corr = -1.0000` with epoch day). Because validation spans days `120.81–152.22` after training (`1.00–120.81`), **100.00% (`36,273 / 36,273`) of validation `D1 == 0` rows fall strictly below the training minimum (`-120.8101`)**, ranging from `-152.22` to `-120.81`.
+- **Rows Where `D1 > 0`**: Account for **49.84%** of Train (`206,016`, `2.94%` fraud) and **57.97%** of Validation (`51,353`, `2.80%` fraud). Here **87.22%** of validation rows remain inside the training range (correlation with epoch day drops to `-0.19353` in Train and `-0.04637` in Validation), while `12.78%` (`6,565`) fall below the training minimum. Overall, **48.89%** (`42,838 / 87,626`) of valid validation rows sit below the training minimum.
+- **`D1 is NaN` Missing-Value Shift**: Missing `D1` shifted sharply from `0.07%` in Train (`273` rows, `1` fraud = `0.37%`) to `1.08%` in Validation (`955` rows, `39` frauds = `4.08%`; Model A validation `PR-AUC = 0.11740`) — mirroring the missing-value fraud shift observed in `M1`.
+- **Locked Model A & 3-Run Slice Ablation on Validation**:
+  - Rows where `D1 == 0`: Locked Model A **0.58523** PR-AUC (prevalence `4.31%` $\rightarrow$ **13.57x** lift; **0.88298** ROC-AUC). Raw PR-AUC is higher solely due to the higher fraud base rate.
+  - Rows where `D1 > 0`: Locked Model A **0.56862** PR-AUC (prevalence `2.80%` $\rightarrow$ **20.29x** lift; **0.93084** ROC-AUC).
+  - Inside vs. below Train `D1_norm` range (`-120.8101`): **0.62361** PR-AUC (**28.59x** lift, **0.94480** ROC-AUC) inside range vs. **0.55963** PR-AUC (**11.83x** lift, **0.87799** ROC-AUC) below train min. (Note: out-of-range rows also lack prior `D1` history, so lower baseline separability is partly expected.)
+  - **3-Run Shuffled Slice Ablation (`Core` vs. `Core + D1_norm`, seeds `42, 101, 202`, 350 fixed trees, $n-1$ std)**:
+    - Overall validation: `0.56552 ± 0.00400` $\rightarrow$ `0.58085 ± 0.00060` (**`+0.01533 ± 0.00342`**).
+    - `D1 > 0` slice: `0.55139 ± 0.01218` $\rightarrow$ `0.58971 ± 0.00314` (**`+0.03832 ± 0.01460`**, positive in 3 of 3 runs).
+    - Inside training `D1_norm` range (`>= -120.8101`): `0.59233 ± 0.01287` $\rightarrow$ `0.64971 ± 0.00663` (**`+0.05738 ± 0.00912`**).
+    - `D1 == 0` slice: `0.59505 ± 0.00437` $\rightarrow$ `0.58687 ± 0.00283` (**`-0.00818 ± 0.00476`**, lower in 3 of 3 runs).
+    - Below training minimum (`< -120.8101`): `0.56995 ± 0.00216` $\rightarrow$ `0.56274 ± 0.00265` (**`-0.00721 ± 0.00323`**).
+  - *(Note: On the single unshuffled run used to lock Model A, adding `D1_norm` showed suggestive swaps of `+0.01728` on `D1 > 0` and `-0.01688` on `D1 == 0`, netting `+0.00182` overall within single-run noise.)*
+
+---
+
+## 12. Model Explainability: TreeSHAP vs. LIME (Day 3)
+Evaluated locked Model A on a 5,000-row validation sample (`seed=42`; `486` alerts at top `97/1k`: `133` TP, `353` FP, `48` FN, `4,466` TN), with LIME benchmarked across 3 seeds (`42, 43, 44`) and 10,000 training background rows on 15 score-quantile-sampled alerts (5 TP, 5 FP, 5 FN):
+
+- **TreeSHAP**: Ran in **0.537s** across all 5,000 rows (`0.107 ms/row` amortized; additivity max error `1.24e-5`). Top 5 global SHAP features: `TransactionAmt` (`0.399`), `D1_norm` (`0.346`, Train-vs-Val adversarial AUC `0.8315`), `C13` (`0.343`), `C14` (`0.265`), and `P_emaildomain` (`0.263`). Only `D15` (`#16` SHAP) overlapped the Day 2 Adversarial Top-10 gain list; **6 of the Top 20** SHAP features had single-feature adversarial AUC $\ge 0.55$.
+- **LIME (`45` explanations, `num_samples=5000`, NaN-aware quartile discretizer)**:
+  - **Runtime**: **0.1957s mean** per explanation (~1,823x slower per row than amortized TreeSHAP).
+  - **SHAP vs. LIME Alignment**: Mean Top-5 overlap was **0.98 / 5 (19.56%)** (TP: `1.67/5`, FP: `0.67/5`, FN: `0.60/5`); Spearman rank correlation across Top-10 was `0.4956`. However, whenever a feature landed in both Top-5 lists (`30/30` runs with $\ge 1$ overlap), **sign agreement was 100.0%**.
+  - **Between-Seed Stability & Local Fit**: Pairwise Top-5 overlap between LIME seeds averaged **2.58 / 5** (`37.8%` rank-1 agreement, `9.13` unique Top-5 features per alert across 3 seeds, `31` Top-10 sign flips), and local Ridge fidelity was low (**mean $R^2 = 0.1329$**, range `0.049–0.265`). Across LIME's Top-5 outputs, `48 / 225` entries (`21.3%`) had `0.0` SHAP attribution, **likely** driven by noisy weighted-Ridge fits on near-constant `V` columns (`<= 1.00`) whose rare bins receive very few random background perturbations.
+- **Decision & Cautions**:
+  - **TreeSHAP is selected** for production alert explanations, with LIME retained as documented comparison evidence.
+  - *Methodological caution*: Slow, unstable LIME behavior is a property of this setup (439 sparse/correlated features, rare 3.5% events, global marginal perturbations), not proof that TreeSHAP is uniquely right — TreeSHAP can still split credit unevenly across correlated `V` columns.
+
+### Future Work
+1. **Regime-Aware `D1` Normalization (Hypothesis)**: Test decoupling rows where `D1 == 0` from rows where `D1 > 0` (e.g., masking `D1_norm` when `D1 == 0` paired with a `D1_is_zero` indicator, rebasing post-training origins, and tracking `D1 is NaN` shift) before treating any modified normalization as an improvement.
