@@ -25,6 +25,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "D1_norm",
       "is_masked": true,
+      "masked_category": "a time-delta feature",
       "value": -52.7109,
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 0.48751
@@ -34,6 +35,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "D2",
       "is_masked": true,
+      "masked_category": "a time-delta feature",
       "value": 69.0,
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 0.39006
@@ -43,6 +45,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "V317",
       "is_masked": true,
+      "masked_category": "a Vesta-engineered anonymised feature",
       "value": 117.0,
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 0.35312
@@ -52,6 +55,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "card5",
       "is_masked": true,
+      "masked_category": "an anonymised card or address identifier",
       "value": 226.0,
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 0.30355
@@ -61,6 +65,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "V96",
       "is_masked": true,
+      "masked_category": "a Vesta-engineered anonymised feature",
       "value": 3.0,
       "direction": "decreases_fraud_score",
       "shap_contribution_log_odds": -0.26066

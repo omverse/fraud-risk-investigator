@@ -74,6 +74,27 @@ def describe_feature(col_name):
     return True, "an anonymised feature"
 
 
+def describe_masked_category(col_name):
+    """Coarse category label allowed for anonymised columns in downstream summaries."""
+    if col_name not in PLAIN_MEANING_FEATURES:
+        if re.match(r"^C\d+$", col_name):
+            return "a counting-type feature"
+        if re.match(r"^D\d+(_norm)?$", col_name):
+            return "a time-delta feature"
+        if re.match(r"^M\d+$", col_name):
+            return "a match flag"
+        if re.match(r"^V\d+$", col_name):
+            return "a Vesta-engineered anonymised feature"
+        if re.match(r"^(card\d+|addr\d+)$", col_name):
+            return "an anonymised card or address identifier"
+        if re.match(r"^id_\d+$", col_name):
+            return "an anonymised identity feature"
+        if col_name in ("dist1", "dist2"):
+            return "an anonymised distance feature"
+        return "an anonymised feature"
+    return PLAIN_MEANING_FEATURES[col_name]
+
+
 def _format_val(val):
     if val is None or pd.isna(val):
         return "MISSING"
@@ -228,6 +249,7 @@ class FraudTransactionExplainer:
                 "display_name": display_name,
                 "feature_code": fname,
                 "is_masked": is_masked,
+                "masked_category": describe_masked_category(fname) if is_masked else None,
                 "value": _format_val(val),
                 "direction": "increases_fraud_score" if shap_v >= 0 else "decreases_fraud_score",
                 "shap_contribution_log_odds": round(shap_v, 5),
@@ -280,7 +302,8 @@ class FraudTransactionExplainer:
                 ),
             })
 
-        if pd.notna(d1_norm_val) and tr_d1n_min is not None and float(d1_norm_val) < float(tr_d1n_min):
+        d1n_rank = int(np.where(sorted_idx == self.feat_names.index("D1_norm"))[0][0]) + 1
+        if d1n_rank <= 5 and pd.notna(d1_norm_val) and tr_d1n_min is not None and float(d1_norm_val) < float(tr_d1n_min):
             d1_zero_note = (
                 " Because D1 == 0 on this row, D1_norm equals minus the transaction epoch day and cannot stay inside historical bounds."
                 if (pd.notna(d1_val) and float(d1_val) == 0.0)
@@ -289,25 +312,29 @@ class FraudTransactionExplainer:
             cautions.append({
                 "code": "D1_NORM_BELOW_TRAIN_MIN",
                 "severity": "warning",
+                "shap_rank": d1n_rank,
                 "feature_code": "D1_norm",
                 "display_name": "an anonymised feature",
+                "masked_category": "a time-delta feature",
                 "observed_value": round(float(d1_norm_val), 4),
                 "train_range": [tr_d1n_min, tr_d1n_max],
                 "message": (
-                    f"Anonymised feature D1_norm ({float(d1_norm_val):.2f}) sits below the training minimum "
+                    f"Top-{d1n_rank} driver D1_norm (a time-delta feature, value {float(d1_norm_val):.2f}) sits below the training minimum "
                     f"({tr_d1n_min:.2f}). Tree splits route all below-range rows down the leftmost branch regardless of magnitude."
                     + d1_zero_note
                 ),
             })
-        elif pd.notna(d1_norm_val) and tr_d1n_max is not None and float(d1_norm_val) > float(tr_d1n_max):
+        elif d1n_rank <= 5 and pd.notna(d1_norm_val) and tr_d1n_max is not None and float(d1_norm_val) > float(tr_d1n_max):
             cautions.append({
                 "code": "D1_NORM_ABOVE_TRAIN_MAX",
                 "severity": "info",
+                "shap_rank": d1n_rank,
                 "feature_code": "D1_norm",
                 "display_name": "an anonymised feature",
+                "masked_category": "a time-delta feature",
                 "observed_value": round(float(d1_norm_val), 4),
                 "train_range": [tr_d1n_min, tr_d1n_max],
-                "message": f"Anonymised feature D1_norm ({float(d1_norm_val):.2f}) exceeds training maximum ({tr_d1n_max:.2f}).",
+                "message": f"Top-{d1n_rank} driver D1_norm (a time-delta feature, value {float(d1_norm_val):.2f}) exceeds training maximum ({tr_d1n_max:.2f}).",
             })
 
         # Check top-10 SHAP drivers for out-of-training-range numerics or unseen categories

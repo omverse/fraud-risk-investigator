@@ -25,6 +25,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "C14",
       "is_masked": true,
+      "masked_category": "a counting-type feature",
       "value": 0.0,
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 2.01436
@@ -34,6 +35,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "C1",
       "is_masked": true,
+      "masked_category": "a counting-type feature",
       "value": 7.0,
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 1.63801
@@ -43,6 +45,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "C10",
       "is_masked": true,
+      "masked_category": "a counting-type feature",
       "value": 4.0,
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 1.06428
@@ -52,6 +55,7 @@
       "display_name": "Card type (credit/debit)",
       "feature_code": "card6",
       "is_masked": false,
+      "masked_category": null,
       "value": "credit",
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 0.53546
@@ -61,6 +65,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "C13",
       "is_masked": true,
+      "masked_category": "a counting-type feature",
       "value": 0.0,
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 0.48012
@@ -140,20 +145,7 @@
     "tolerance": 0.0001,
     "passed": true
   },
-  "data_cautions": [
-    {
-      "code": "D1_NORM_BELOW_TRAIN_MIN",
-      "severity": "warning",
-      "feature_code": "D1_norm",
-      "display_name": "an anonymised feature",
-      "observed_value": -125.778,
-      "train_range": [
-        -120.8101,
-        632.3451
-      ],
-      "message": "Anonymised feature D1_norm (-125.78) sits below the training minimum (-120.81). Tree splits route all below-range rows down the leftmost branch regardless of magnitude. Because D1 == 0 on this row, D1_norm equals minus the transaction epoch day and cannot stay inside historical bounds."
-    }
-  ],
+  "data_cautions": [],
   "disclaimer": "This explanation describes what drove the model's score, not why the fraud happened.",
   "fixture_metadata": {
     "fixture_id": 2,

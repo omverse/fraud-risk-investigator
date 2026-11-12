@@ -25,6 +25,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "card1",
       "is_masked": true,
+      "masked_category": "an anonymised card or address identifier",
       "value": 10023.0,
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 0.8652
@@ -34,6 +35,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "D1_norm",
       "is_masked": true,
+      "masked_category": "a time-delta feature",
       "value": 374.236,
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 0.69184
@@ -43,6 +45,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "D15",
       "is_masked": true,
+      "masked_category": "a time-delta feature",
       "value": 511.0,
       "direction": "decreases_fraud_score",
       "shap_contribution_log_odds": -0.63731
@@ -52,6 +55,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "dist1",
       "is_masked": true,
+      "masked_category": "an anonymised distance feature",
       "value": 32.0,
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 0.38109
@@ -61,6 +65,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "D1",
       "is_masked": true,
+      "masked_category": "a time-delta feature",
       "value": 511.0,
       "direction": "increases_fraud_score",
       "shap_contribution_log_odds": 0.26194

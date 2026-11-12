@@ -1,0 +1,79 @@
+{
+  "locked_rules": {
+    "dataset_hf_id": "ucirvine/sms_spam",
+    "dataset_name": "UCI SMS Spam Collection v.1",
+    "era_and_language": "Compiled in the early 2010s (Almeida et al., ACM DocEng 2011); English SMS messages only.",
+    "hf_hub_license_field": "unknown",
+    "uci_repository_license": "CC BY 4.0 (UCI Machine Learning Repository, Dataset ID 228)",
+    "deduplication_policy": "Drop whitespace-collapsed lowercase duplicates (keeping first stripped text) before splitting; assert zero exact or normalized text overlap across train/val/test.",
+    "split_ratios": {
+      "train": 0.8,
+      "val": 0.1,
+      "test": 0.1
+    },
+    "split_seed": 42,
+    "metrics": [
+      "pr_auc_spam",
+      "f1_spam",
+      "precision_spam",
+      "recall_spam"
+    ],
+    "threshold_selection_rule": "Maximize validation F1 on the spam class using the validation split only.",
+    "models": [
+      "TF-IDF + Logistic Regression (Step 5 baseline)",
+      "Hugging Face Zero-Shot NLI Classifier (Step 5 baseline)",
+      "Fine-tuned DistilBERT (Step 6: 3 seeds, 2-3 epochs, report mean +/- sample std with ddof=1)"
+    ],
+    "test_hygiene_rule": "No hyperparameter tuning or threshold adjustment after viewing UCI test set or modern test set numbers.",
+    "modern_test_set_rule": "Generic modern scam/normal messages (no real numbers or links), evaluated once at the end, never used for training."
+  },
+  "raw_dataset": {
+    "rows": 5574,
+    "ham": 4827,
+    "spam": 747,
+    "spam_rate": 0.13402
+  },
+  "duplicate_audit": {
+    "exact_duplicates_removed": 403,
+    "stripped_duplicates_removed": 414,
+    "normalized_case_ws_duplicates": 415,
+    "exact_label_conflicts": 0,
+    "stripped_label_conflicts": 0,
+    "normalized_label_conflicts": 0,
+    "dedup_method_applied": "drop_duplicates(subset=['sms_norm'], keep='first') preserving original sms_stripped text"
+  },
+  "deduplicated_dataset": {
+    "rows": 5159,
+    "ham": 4517,
+    "spam": 642,
+    "spam_rate": 0.12444
+  },
+  "splits": {
+    "train_80": {
+      "rows": 4127,
+      "ham": 3613,
+      "spam": 514,
+      "spam_rate": 0.12455
+    },
+    "val_10": {
+      "rows": 516,
+      "ham": 452,
+      "spam": 64,
+      "spam_rate": 0.12403
+    },
+    "test_10": {
+      "rows": 516,
+      "ham": 452,
+      "spam": 64,
+      "spam_rate": 0.12403
+    }
+  },
+  "modern_test_set": {
+    "path": "results/day3_sms_modern_test.json",
+    "rows": 80,
+    "ham": 40,
+    "spam": 40,
+    "spam_rate": 0.5,
+    "usage_constraint": "Held out strictly for single-use final evaluation at Step 7; never used for training or threshold selection."
+  }
+}

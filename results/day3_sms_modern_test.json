@@ -1,0 +1,482 @@
+[
+  {
+    "id": "modern_ham_01",
+    "sms": "Your login verification code is 482910. It expires in 10 minutes. Our team will never call or text asking you for this code.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_02",
+    "sms": "Order #A1042 from Downtown Roasters is out for delivery today between 2 PM and 4 PM. Track it directly inside the official store app.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_03",
+    "sms": "Card Alert: A charge of $24.50 at Corner Market on card ending in 0000 was approved. If you made this purchase, no action is needed.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_04",
+    "sms": "Running about 10 minutes late to the 3 PM sync because bridge traffic is backed up. Please go ahead and start without me.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_05",
+    "sms": "Reminder: Your dental cleaning with Dr. Patel is scheduled for tomorrow at 9:30 AM. Reply YES to confirm or call the office front desk.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_06",
+    "sms": "Gate update: Flight AA100 now boards at Gate B14 at 6:15 PM. Please check the airline app for the latest seat and boarding pass details.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_07",
+    "sms": "Hey, did the electric utility bill auto-pay from our joint account this morning, or should I submit it tonight?",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_08",
+    "sms": "Customer note: I am traveling out of town this week and bought two train tickets using my debit card at the station kiosk.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_09",
+    "sms": "Your library hold 'Designing Data-Intensive Applications' is ready for pickup at the main branch desk until Friday.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_10",
+    "sms": "Receipt from City Pharmacy: Copay of $15.00 paid on card ending in 0000. Questions? Contact us through the patient portal.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_11",
+    "sms": "Thanks for joining today's sprint review! I pushed the updated API schema notes to the shared team wiki.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_12",
+    "sms": "Your monthly statement for savings account ending in 0000 is now ready to view when you sign in to online banking.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_13",
+    "sms": "Soccer practice is moved to Field 3 tonight because of wet turf on Field 1. Bring an extra water bottle.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_14",
+    "sms": "Customer explanation: This $480 hotel charge is for my work conference stay in Chicago from Tuesday to Thursday.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_15",
+    "sms": "Rideshare update: Your driver Sam has arrived in a silver sedan near the north pickup curb.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_16",
+    "sms": "Friendly reminder from your building manager: Water will be shut off briefly Thursday 10 AM to 11 AM for pipe maintenance.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_17",
+    "sms": "Two-step sign-in alert: A new browser signed in to your workspace account from macOS. If this was you, you can ignore this message.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_18",
+    "sms": "Hey, are we still meeting at 12:30 for lunch near the office, or do you want to push it to 1:00?",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_19",
+    "sms": "Your recurring transfer of $250.00 to Emergency Savings completed successfully on schedule.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_20",
+    "sms": "Customer context: Sending $150 to my sister for our shared parents' anniversary dinner gift\u2014she paid the restaurant deposit.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_21",
+    "sms": "Clinic update: Lab results from yesterday's blood panel have been posted to your secure health chart.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_22",
+    "sms": "Auto-pay confirmation: Your internet bill of $65.00 was paid on time today. Next scheduled payment is next month.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_23",
+    "sms": "Can you review the pull request when you have a free 15 minutes? I split the calibration script into two smaller helpers.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_24",
+    "sms": "Your grocery pickup order is ready in spot #4. Check in using the store app when you arrive in the parking lot.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_25",
+    "sms": "Hotel reservation confirmed: Check-in Sunday 3 PM, confirmation code stored in your travel itinerary folder.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_26",
+    "sms": "Cardholder note: I placed three small coffee and bakery orders back-to-back while buying snacks for the whole office team.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_27",
+    "sms": "Transit alert: Red Line trains are running 8 minutes behind schedule due to signal testing downtown.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_28",
+    "sms": "Your warranty registration for the new laptop stand was saved. Keep your receipt for your records.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_29",
+    "sms": "Happy birthday! Let us know when you're free this weekend so everyone can grab dinner together.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_30",
+    "sms": "Low balance courtesy alert: Checking account ending in 0000 dropped below your $200 reminder threshold.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_31",
+    "sms": "Customer note: Purchasing a replacement monitor online from a new electronics vendor after my desk screen cracked.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_32",
+    "sms": "Prescription ready: Your refill is ready for pickup at the Main Street counter during regular store hours.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_33",
+    "sms": "Team calendar update: Tomorrow's standup moved from 9:30 AM to 10:00 AM to accommodate the deployment window.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_34",
+    "sms": "Your direct deposit payroll credit posted this morning. Log in to your payroll portal to download your pay stub.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_35",
+    "sms": "Thanks for calling customer care earlier. Your travel notice for May 12 to May 19 has been added to your card profile.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_36",
+    "sms": "Parking session for zone 402 expires in 15 minutes. Extend your meter time inside the city parking app if needed.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_37",
+    "sms": "Order delayed slightly: One book from your shipment will arrive Thursday instead of Wednesday at no extra shipping cost.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_38",
+    "sms": "Customer note: Buying two concert tickets on resale for next month\u2014using the same home Wi-Fi and device as usual.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_39",
+    "sms": "Your monthly mobile plan invoice is $45.00 and will auto-pay on the 20th. Manage settings anytime in the carrier app.",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_ham_40",
+    "sms": "Quick question\u2014do you have the PDF from yesterday's design workshop handy so I can link it in the project doc?",
+    "label": 0,
+    "label_name": "ham"
+  },
+  {
+    "id": "modern_spam_01",
+    "sms": "[Bank Alert] Unusual sign-in detected on your checking account. Verify your identity within 2 hours at [LINK] or access will be suspended.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_02",
+    "sms": "USPS Delivery Notice: Your parcel cannot be delivered due to an incomplete street address. Confirm details and pay $1.99 redelivery at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_03",
+    "sms": "ExpressToll Final Notice: You have an unpaid toll balance of $6.40. Settle today at [LINK] to avoid a $50 late penalty and registration hold.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_04",
+    "sms": "Security Alert: A wire transfer of $2,450 was queued from your savings profile. If you did not authorize this, cancel via [LINK] immediately.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_05",
+    "sms": "CoinExchange Notice: A login from a new device in an unrecognized region requested a withdrawal. Lock your wallet now at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_06",
+    "sms": "Hi! I work with a digital commerce recruiting team. Earn $150-$320/day rating app listings flexibly from home. Reply YES to get onboarded.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_07",
+    "sms": "Your streaming membership payment failed today. Update your billing card at [LINK] within 24 hours so your account is not terminated.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_08",
+    "sms": "IRS Tax Refund Update: An unclaimed credit of $842.00 is ready for direct deposit. Submit your routing info at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_09",
+    "sms": "Apple Pay Notice: Your digital wallet has been temporarily restricted for suspicious activity. Re-activate at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_10",
+    "sms": "Hey Mom, it's me! I dropped my phone in water and I'm texting from a friend's number. Can you send $280 via instant pay right now? I'll pay you back tonight.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_11",
+    "sms": "Billing Support: Your annual cloud security license ($399.00) auto-renewed today. Call our cancellation desk at [PHONE] within 12 hours for a full refund.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_12",
+    "sms": "Courier Alert: Customs clearance is paused on shipment #0000 due to missing duty tax of $3.50. Complete payment at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_13",
+    "sms": "Your mobile carrier upgraded your loyalty points! You have 14,200 points expiring tonight\u2014redeem for a free tablet at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_14",
+    "sms": "Fraud Dept Notice: Reply with the 6-digit verification code we just sent to block an unauthorized card charge at Metro Electronics.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_15",
+    "sms": "PayService: You received an incoming payment of $650.00 pending verification. Accept funds at [LINK] before the hold expires.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_16",
+    "sms": "DMV Reminder: Our records show an unresolved traffic citation. Pay the $35 administrative fee at [LINK] by Friday to prevent license suspension.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_17",
+    "sms": "URGENT HR Request: Hi, this is the CEO in a client meeting and can't talk. Can you pick up five $100 digital gift cards and send the codes ASAP?",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_18",
+    "sms": "Your debit card ending in 0000 was flagged for three overseas attempts. Confirm whether these were yours at [LINK] right away.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_19",
+    "sms": "Crypto Airdrop Confirmed: Connect your wallet at [LINK] to claim your verified 1,500 token allocation before midnight.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_20",
+    "sms": "Pharmacy Notice: Your prescription order needs urgent card re-verification. Enter payment info at [LINK] so shipping isn't delayed.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_21",
+    "sms": "Electric Utility Alert: Scheduled disconnection notice for tomorrow at 9 AM due to a past-due invoice. Pay immediately at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_22",
+    "sms": "Someone uploaded your personal email address to a leaked data list. Click [LINK] to run a complimentary identity wipe now.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_23",
+    "sms": "Quick favor\u2014our accounting portal is down and the vendor needs a $1,200 urgent wire today. Can you push it through and confirm?",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_24",
+    "sms": "Notice from Social Benefits Office: Your monthly stipend was put on hold for identity reconfirmation. Complete form at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_25",
+    "sms": "Parcel locker full: Reschedule doorstep drop-off for package [ID] for free only today at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_26",
+    "sms": "Congratulations! Your mobile number was picked in this week's supermarket customer appreciation giveaway for a $500 voucher at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_27",
+    "sms": "WebMail Admin: Your mailbox storage is 99% full and incoming messages will bounce. Upgrade storage credentials at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_28",
+    "sms": "Hi, sorry to bother you\u2014did I send money to your account by mistake? Please return the $200 via instant transfer before the app locks it.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_29",
+    "sms": "Airline Rebooking Desk: Your flight was cancelled. Reclaim your $420 voucher or rebook seat selection immediately at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_30",
+    "sms": "Loan Pre-Approval: You qualify for up to $15,000 same-day cash regardless of credit score! Apply with zero paperwork at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_31",
+    "sms": "Bank Fraud Specialist calling soon: Please keep the 2FA security code handy and read it to the agent to verify you own the device.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_32",
+    "sms": "Your package from Global Express is held at local customs depot. Confirm recipient DOB and zip code at [LINK] to release.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_33",
+    "sms": "Security Warning: Unusual API key access detected on your payment merchant dashboard. Reset root password via [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_34",
+    "sms": "Guaranteed daily returns of 4% trading AI-managed forex pools. Limited slots this week\u2014message [CONTACT] for VIP invite.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_35",
+    "sms": "Student Loan Relief Program: Forgiveness applications close tonight! Submit your SSN last-4 at [LINK] to lock zero interest.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_36",
+    "sms": "Your tax return was rejected due to a mismatch. Upload corrected banking details at [LINK] within 48 hours.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_37",
+    "sms": "Attention Cardholder: A $912 purchase at Luxury Watches Ltd is pending. If unauthorized, enter your full card PIN at [LINK] to cancel.",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_38",
+    "sms": "Remote Data Entry Offer: Earn $45/hr setting up merchant profiles on your laptop, no experience needed. Register at [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_39",
+    "sms": "Medical Insurance Rebate: A $275 overpayment refund is pending for your household. Claim deposit via [LINK].",
+    "label": 1,
+    "label_name": "spam"
+  },
+  {
+    "id": "modern_spam_40",
+    "sms": "Your cloud drive access expires in 3 hours due to failed card billing. Click [LINK] now to avoid permanent photo deletion.",
+    "label": 1,
+    "label_name": "spam"
+  }
+]

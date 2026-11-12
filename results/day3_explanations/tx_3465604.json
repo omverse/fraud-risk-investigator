@@ -25,6 +25,7 @@
       "display_name": "Device information",
       "feature_code": "DeviceInfo",
       "is_masked": false,
+      "masked_category": null,
       "value": "Trident/7.0",
       "direction": "decreases_fraud_score",
       "shap_contribution_log_odds": -1.57816
@@ -34,6 +35,7 @@
       "display_name": "Screen resolution",
       "feature_code": "id_33",
       "is_masked": false,
+      "masked_category": null,
       "value": "1600x900",
       "direction": "decreases_fraud_score",
       "shap_contribution_log_odds": -1.08888
@@ -43,6 +45,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "D1_norm",
       "is_masked": true,
+      "masked_category": "a time-delta feature",
       "value": 3.2314,
       "direction": "decreases_fraud_score",
       "shap_contribution_log_odds": -1.02689
@@ -52,6 +55,7 @@
       "display_name": "Transaction amount (USD)",
       "feature_code": "TransactionAmt",
       "is_masked": false,
+      "masked_category": null,
       "value": 25.0,
       "direction": "decreases_fraud_score",
       "shap_contribution_log_odds": -0.89286
@@ -61,6 +65,7 @@
       "display_name": "an anonymised feature",
       "feature_code": "card1",
       "is_masked": true,
+      "masked_category": "an anonymised card or address identifier",
       "value": 18227.0,
       "direction": "decreases_fraud_score",
       "shap_contribution_log_odds": -0.54406
